@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Mobilna Biblioteka</string>
+    <string name="api_key">AIzaSyD49_Wn3SU-7OWDrn1a6s5RxHyiD4Midpk</string>
+    <string name="backend_server">https://www.googleapis.com/books/v1/</string>
+    <string name="search_bottom_navigation_view_icon_name">Szukaj</string>
+    <string name="discover_bottom_navigation_view_icon_name">Odkryj</string>
+    <string name="library_bottom_navigation_view_icon_name">Biblioteka</string>
+    <string name="info_bottom_navigation_view_icon_name">Informacje</string>
+</resources>

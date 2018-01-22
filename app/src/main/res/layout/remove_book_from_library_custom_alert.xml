@@ -1,0 +1,90 @@
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffffff">
+
+    <LinearLayout
+        android:id="@+id/top_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:background="#E74C3C"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <ImageView
+            android:id="@+id/add_book_icon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/remove_icon"
+            android:scaleType="fitCenter"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#747474"
+        android:fontFamily="sans-serif"
+        android:layout_below="@+id/top_linear_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttons_linear_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_linear_layout" />
+
+    <LinearLayout
+        android:id="@+id/buttons_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/text_dialog"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:padding="5dp"
+            android:fontFamily="sans-serif-thin"
+            android:textSize="14sp"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="4dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:background="#E74C3C"
+            android:text="ANULUJ"
+            android:textColor="#ffffffff" />
+
+        <Button
+            android:id="@+id/remove_button"
+            android:layout_width="100dp"
+            android:padding="5dp"
+            android:fontFamily="sans-serif-thin"
+            android:textSize="14sp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="4dp"
+            android:layout_centerHorizontal="true"
+            android:background="#E74C3C"
+            android:text="USUŃ"
+            android:textColor="#ffffffff" />
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

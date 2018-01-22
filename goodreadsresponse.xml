@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GoodreadsResponse>
+	<Request>
+		<authentication>true</authentication>
+		<key>
+			<![CDATA[VMHocjUiV1jXDPpxNCtg]]>
+		</key>
+		<method>
+			<![CDATA[search_search]]>
+		</method>
+	</Request>
+	<search>
+		<query>
+			<![CDATA[Harry Potter]]>
+		</query>
+		<results-start>1</results-start>
+		<results-end>10</results-end>
+		<total-results>2989</total-results>
+		<source>Goodreads</source>
+		<query-time-seconds>0.08</query-time-seconds>
+		<results>
+			<work>
+				<id type="integer">4640799</id>
+				<books_count type="integer">540</books_count>
+				<ratings_count type="integer">5069777</ratings_count>
+				<text_reviews_count type="integer">80183</text_reviews_count>
+				<original_publication_year type="integer">1997</original_publication_year>
+				<original_publication_month type="integer">6</original_publication_month>
+				<original_publication_day type="integer">26</original_publication_day>
+				<average_rating>4.45</average_rating>
+				<best_book type="Book">
+					<id type="integer">3</id>
+					<title>Harry Potter and the Sorcerer's Stone (Harry Potter, #1)</title>
+					<author>
+						<id type="integer">1077326</id>
+						<name>J.K. Rowling</name>
+					</author>
+					<image_url>https://images.gr-assets.com/books/1474154022m/3.jpg</image_url>
+					<small_image_url>https://images.gr-assets.com/books/1474154022s/3.jpg</small_image_url>
+				</best_book>
+			</work>
+			<work>
+				<id type="integer">2402163</id>
+				<books_count type="integer">411</books_count>
+				<ratings_count type="integer">2045921</ratings_count>
+				<text_reviews_count type="integer">38376</text_reviews_count>
+				<original_publication_year type="integer">1999</original_publication_year>
+				<original_publication_month type="integer">7</original_publication_month>
+				<original_publication_day type="integer">8</original_publication_day>
+				<average_rating>4.53</average_rating>
+				<best_book type="Book">
+					<id type="integer">5</id>
+					<title>Harry Potter and the Prisoner of Azkaban (Harry Potter, #3)</title>
+					<author>
+						<id type="integer">1077326</id>
+						<name>J.K. Rowling</name>
+					</author>
+					<image_url>https://images.gr-assets.com/books/1499277281m/5.jpg</image_url>
+					<small_image_url>https://images.gr-assets.com/books/1499277281s/5.jpg</small_image_url>
+				</best_book>
+			</work>
+			<work>
+				<id type="integer">6231171</id>
+				<books_count type="integer">417</books_count>
+				<ratings_count type="integer">1987339</ratings_count>
+				<text_reviews_count type="integer">36300</text_reviews_count>
+				<original_publication_year type="integer">1998</original_publication_year>
+				<original_publication_month type="integer">7</original_publication_month>
+				<original_publication_day type="integer">2</original_publication_day>
+				<average_rating>4.38</average_rating>
+				<best_book type="Book">
+					<id type="integer">15881</id>
+					<title>Harry Potter and the Chamber of Secrets (Harry Potter, #2)</title>
+					<author>
+						<id type="integer">1077326</id>
+						<name>J.K. Rowling</name>
+					</author>
+					<image_url>https://images.gr-assets.com/books/1474169725m/15881.jpg</image_url>
+					<small_image_url>https://images.gr-assets.com/books/1474169725s/15881.jpg</small_image_url>
+				</best_book>
+			</work>
+			<work>
+				<id type="integer">2963218</id>
+				<books_count type="integer">273</books_count>
+				<ratings_count type="integer">1917359</ratings_count>
+				<text_reviews_count type="integer">53506</text_reviews_count>
+				<original_publication_year type="integer">2007</original_publication_year>
+				<original_publication_month type="integer">7</original_publication_month>
+				<original_publication_day type="integer">21</original_publication_day>
+				<average_rating>4.62</average_rating>
+				<best_book type="Book">
+					<id type="integer">136251</id>
+					<title>Harry Potter and the Deathly Hallows (Harry Potter, #7)</title>
+					<author>
+						<id type="integer">1077326</id>
+						<name>J.K. Rowling</name>
+					</author>
+					<image_url>https://images.gr-assets.com/books/1474171184m/136251.jpg</image_url>
+					<small_image_url>https://images.gr-assets.com/books/1474171184s/136251.jpg</small_image_url>
+				</best_book>
+			</work>
+			<work>
+				<id type="integer">3046572</id>
+				<books_count type="integer">314</books_count>
+				<ratings_count type="integer">1934505</ratings_count>
+				<text_reviews_count type="integer">32792</text_reviews_count>
+				<original_publication_year type="integer">2000</original_publication_year>
+				<original_publication_month type="integer">7</original_publication_month>
+				<original_publication_day type="integer">8</original_publication_day>
+				<average_rating>4.53</average_rating>
+				<best_book type="Book">
+					<id type="integer">6</id>
+					<title>Harry Potter and the Goblet of Fire (Harry Potter, #4)</title>
+					<author>
+						<id type="integer">1077326</id>
+						<name>J.K. Rowling</name>
+					</author>
+					<image_url>https://images.gr-assets.com/books/1361482611m/6.jpg</image_url>
+					<small_image_url>https://images.gr-assets.com/books/1361482611s/6.jpg</small_image_url>
+				</best_book>
+			</work>
+			<work>
+				<id type="integer">2809203</id>
+				<books_count type="integer">315</books_count>
+				<ratings_count type="integer">1898575</ratings_count>
+				<text_reviews_count type="integer">30152</text_reviews_count>
+				<original_publication_year type="integer">2003</original_publication_year>
+				<original_publication_month type="integer">6</original_publication_month>
+				<original_publication_day type="integer">21</original_publication_day>
+				<average_rating>4.47</average_rating>
+				<best_book type="Book">
+					<id type="integer">2</id>
+					<title>Harry Potter and the Order of the Phoenix (Harry Potter, #5)</title>
+					<author>
+						<id type="integer">1077326</id>
+						<name>J.K. Rowling</name>
+					</author>
+					<image_url>https://images.gr-assets.com/books/1507396732m/2.jpg</image_url>
+					<small_image_url>https://images.gr-assets.com/books/1507396732s/2.jpg</small_image_url>
+				</best_book>
+			</work>
+			<work>
+				<id type="integer">41335427</id>
+				<books_count type="integer">288</books_count>
+				<ratings_count type="integer">1850539</ratings_count>
+				<text_reviews_count type="integer">28816</text_reviews_count>
+				<original_publication_year type="integer">2005</original_publication_year>
+				<original_publication_month type="integer">7</original_publication_month>
+				<original_publication_day type="integer">16</original_publication_day>
+				<average_rating>4.54</average_rating>
+				<best_book type="Book">
+					<id type="integer">1</id>
+					<title>Harry Potter and the Half-Blood Prince (Harry Potter, #6)</title>
+					<author>
+						<id type="integer">1077326</id>
+						<name>J.K. Rowling</name>
+					</author>
+					<image_url>https://images.gr-assets.com/books/1361039191m/1.jpg</image_url>
+					<small_image_url>https://images.gr-assets.com/books/1361039191s/1.jpg</small_image_url>
+				</best_book>
+			</work>
+			<work>
+				<id type="integer">2962492</id>
+				<books_count type="integer">84</books_count>
+				<ratings_count type="integer">210510</ratings_count>
+				<text_reviews_count type="integer">6631</text_reviews_count>
+				<original_publication_year type="integer">1998</original_publication_year>
+				<original_publication_month type="integer" nil="true"/>
+				<original_publication_day type="integer" nil="true"/>
+				<average_rating>4.74</average_rating>
+				<best_book type="Book">
+					<id type="integer">862041</id>
+					<title>Harry Potter Boxset (Harry Potter, #1-7)</title>
+					<author>
+						<id type="integer">1077326</id>
+						<name>J.K. Rowling</name>
+					</author>
+					<image_url>https://images.gr-assets.com/books/1392579059m/862041.jpg</image_url>
+					<small_image_url>https://images.gr-assets.com/books/1392579059s/862041.jpg</small_image_url>
+				</best_book>
+			</work>
+			<work>
+				<id type="integer">48765776</id>
+				<books_count type="integer">108</books_count>
+				<ratings_count type="integer">436948</ratings_count>
+				<text_reviews_count type="integer">55813</text_reviews_count>
+				<original_publication_year type="integer">2016</original_publication_year>
+				<original_publication_month type="integer">7</original_publication_month>
+				<original_publication_day type="integer">31</original_publication_day>
+				<average_rating>3.73</average_rating>
+				<best_book type="Book">
+					<id type="integer">29056083</id>
+					<title>Harry Potter and the Cursed Child - Parts One and Two (Harry Potter, #8)</title>
+					<author>
+						<id type="integer">5042201</id>
+						<name>John Tiffany</name>
+					</author>
+					<image_url>https://images.gr-assets.com/books/1470082995m/29056083.jpg</image_url>
+					<small_image_url>https://images.gr-assets.com/books/1470082995s/29056083.jpg</small_image_url>
+				</best_book>
+			</work>
+			<work>
+				<id type="integer">21457570</id>
+				<books_count type="integer">6</books_count>
+				<ratings_count type="integer">27199</ratings_count>
+				<text_reviews_count type="integer">912</text_reviews_count>
+				<original_publication_year type="integer">2005</original_publication_year>
+				<original_publication_month type="integer">1</original_publication_month>
+				<original_publication_day type="integer">1</original_publication_day>
+				<average_rating>4.73</average_rating>
+				<best_book type="Book">
+					<id type="integer">10</id>
+					<title>Harry Potter Collection (Harry Potter, #1-6)</title>
+					<author>
+						<id type="integer">1077326</id>
+						<name>J.K. Rowling</name>
+					</author>
+					<image_url>https://images.gr-assets.com/books/1328867351m/10.jpg</image_url>
+					<small_image_url>https://images.gr-assets.com/books/1328867351s/10.jpg</small_image_url>
+				</best_book>
+			</work>
+		</results>
+	</search>
+</GoodreadsResponse>
