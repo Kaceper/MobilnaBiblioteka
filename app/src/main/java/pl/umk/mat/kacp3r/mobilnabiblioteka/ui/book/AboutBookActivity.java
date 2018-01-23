@@ -1,12 +1,7 @@
 package pl.umk.mat.kacp3r.mobilnabiblioteka.ui.book;
 
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
@@ -33,9 +28,14 @@ import pl.umk.mat.kacp3r.mobilnabiblioteka.MobilnaBiblioteka;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.R;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.RestApi;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.about.VolumeResponse;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.search.Item;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Authors;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Book;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Categories;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.model.ImageLinks;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.model.IndustryIdentifier;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.RealmController;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.utils.AddBookDialogInActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,11 +45,15 @@ public class AboutBookActivity extends AppCompatActivity
 {
     private static final String TAG = "AboutBookActivity";
 
+    private String googleBookId;
+    private Boolean isInLibrary;
+
     @Inject Retrofit retrofit;
     private Realm realm;
 
     @BindView(R.id.maturity_rating_image_view) ImageView maturityRatingImageView;
     @BindView(R.id.back_top_image_button) ImageButton backTopImageButton;
+    @BindView(R.id.add_book_to_library_image_button) ImageButton addBookToLibraryImageButton;
     @BindView(R.id.title_text_view) TextView titleTextView;
     @BindView(R.id.thumbnail) ImageView thumbnailImageView;
     @BindView(R.id.authors_text_view) TextView authorsTextView;
@@ -67,18 +71,25 @@ public class AboutBookActivity extends AppCompatActivity
         onBackPressed();
     }
 
+    @OnClick(R.id.add_book_to_library_image_button)
+    public void setAddBookToLibraryImageButtonClick()
+    {
+        AddBookDialogInActivity addBookDialogInActivity = new AddBookDialogInActivity();
+        addBookDialogInActivity.showDialog(this,  "Dodaj książkę do biblioteki", googleBookId, false);
+    }
+
     @Override
     public void onBackPressed()
     {
         finish();
     }
 
-    private void makeToast(String toastMessage)
+    public void makeToast(String toastMessage)
     {
         Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
     }
 
-    private void bookGoogleIdRequestWithRetrofit(final String id)
+    public void bookGoogleIdRequestWithRetrofit(final String id, final Boolean isInLibrary, final int shelf)
     {
         ((MobilnaBiblioteka) getApplication()).getNetComponent().inject(this);
         RestApi service = retrofit.create(RestApi.class);
@@ -98,6 +109,7 @@ public class AboutBookActivity extends AppCompatActivity
                             String maturityRating;
                             String title;
                             List<String> authors = null;
+                            List<String> categories = null;
                             String thumbnailUrl = null;
                             String rate;
                             int ratingsCount;
@@ -106,6 +118,8 @@ public class AboutBookActivity extends AppCompatActivity
                             String description;
                             List<String> isbnList;
                             int pageCount;
+                            pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.about.ImageLinks imageLinks = null;
+                            List<pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.about.IndustryIdentifier> industryIdentifiers = null;
 
                             if (response.body().getVolumeInfo().getMaturityRating() != null)
                             {
@@ -134,8 +148,19 @@ public class AboutBookActivity extends AppCompatActivity
                                 authors.add(0, "Brak info o autorach");
                             }
 
+                            if (response.body().getVolumeInfo().getCategories() != null)
+                            {
+                                categories = response.body().getVolumeInfo().getCategories();
+                            }
+                            else
+                            {
+                                categories.add(0, "Brak kategorii");
+                            }
+
                             if (response.body().getVolumeInfo().getImageLinks() != null)
                             {
+                                imageLinks = response.body().getVolumeInfo().getImageLinks();
+
                                 if (response.body().getVolumeInfo().getImageLinks().getThumbnail() != null)
                                 {
                                     thumbnailUrl = response.body().getVolumeInfo().getImageLinks().getThumbnail();
@@ -189,6 +214,8 @@ public class AboutBookActivity extends AppCompatActivity
 
                             if (response.body().getVolumeInfo().getIndustryIdentifiers() != null)
                             {
+                                industryIdentifiers = response.body().getVolumeInfo().getIndustryIdentifiers();
+
                                 isbnList = new ArrayList<>();
 
                                 for (int i = 0; i < response.body().getVolumeInfo().getIndustryIdentifiers().size(); i++)
@@ -211,20 +238,40 @@ public class AboutBookActivity extends AppCompatActivity
                                 pageCount = 0;
                             }
 
-                            setBookMainInformations(maturityRating,
-                                    title,
-                                    thumbnailUrl,
-                                    authors,
-                                    rate,
-                                    ratingsCount,
-                                    publisher,
-                                    publishedDate);
+                            if (isInLibrary == false && shelf != 0)
+                            {
+                                addBookToDatabase(realm,
+                                        shelf,
+                                        title,
+                                        description,
+                                        pageCount,
+                                        rate,
+                                        ratingsCount,
+                                        maturityRating,
+                                        publisher,
+                                        publishedDate,
+                                        authors,
+                                        categories,
+                                        imageLinks,
+                                        industryIdentifiers);
+                            }
+                            else
+                            {
+                                setBookMainInformations(maturityRating,
+                                        title,
+                                        thumbnailUrl,
+                                        authors,
+                                        rate,
+                                        ratingsCount,
+                                        publisher,
+                                        publishedDate);
 
-                            setBookDescription(description);
+                                setBookDescription(description);
 
-                            setBibliographyInfo(publisher,
-                                    isbnList,
-                                    pageCount);
+                                setBibliographyInfo(publisher,
+                                        isbnList,
+                                        pageCount);
+                            }
                         }
                     }
                 }
@@ -236,6 +283,195 @@ public class AboutBookActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(), t.getMessage().toString(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void addBookToDatabase(Realm realm,
+                                  int shelf,
+                                  String title,
+                                  String desciption,
+                                  int pageCount,
+                                  String averageRating,
+                                  int ratingsCount,
+                                  String maturityRating,
+                                  String publisher,
+                                  String publishedDate,
+                                  List<String> authorsList,
+                                  List<String> categoriesList,
+                                  pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.about.ImageLinks imageLinks,
+                                  List<pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.about.IndustryIdentifier> industryIdentifierList)
+    {
+        Book book = new Book();
+        Authors authors;
+        RealmList<Authors> authorsRealmList = new RealmList<>();
+        Categories categories;
+        RealmList<Categories> categoriesRealmList = new RealmList<>();
+        IndustryIdentifier industryIdentifier;
+        RealmList<IndustryIdentifier> industryIdentifiersRealmList = new RealmList<>();
+
+        book.setId(RealmController.getInstance().getBooks().size() + System.currentTimeMillis());
+
+        book.setGoogleBookId(googleBookId);
+
+        if (title != null)
+        {
+            book.setTitle(title);
+        }
+        else
+        {
+            book.setTitle("Brak info o tytule");
+        }
+
+        if (desciption != null)
+        {
+            book.setDescription(desciption);
+        }
+        else
+        {
+            book.setDescription("Brak opisu");
+        }
+
+        if (pageCount >= 0)
+        {
+            if (shelf == 3)
+            {
+                book.setReadedPageCount(pageCount);
+            }
+            else
+            {
+                book.setReadedPageCount(0);
+            }
+
+            book.setPageCount(pageCount);
+        }
+        else
+        {
+            book.setPageCount(0);
+        }
+
+        if (averageRating != null)
+        {
+            book.setAverageRating(Double.valueOf(averageRating));
+        }
+        else
+        {
+            book.setAverageRating(0.0);
+        }
+
+        if (ratingsCount >= 0)
+        {
+            book.setRatingsCount(ratingsCount);
+        }
+        else
+        {
+            book.setRatingsCount(0);
+        }
+
+        if (maturityRating != null)
+        {
+            book.setMaturityRating(maturityRating);
+        }
+        else
+        {
+            book.setMaturityRating("NO_INFO");
+        }
+
+        if (publisher != null)
+        {
+            book.setPublisher(publisher);
+        }
+        else
+        {
+            book.setPublisher("Brak info o wydawcy");
+        }
+
+        if (publishedDate != null)
+        {
+            book.setPublishedDate(publishedDate);
+        }
+        else
+        {
+            book.setPublishedDate("NO_DATE");
+        }
+
+        if (authorsList != null)
+        {
+            for (int j = 0; j < authorsList.size(); j++)
+            {
+                authors = new Authors();
+                authors.setAuthor(authorsList.get(j));
+                authorsRealmList.add(j, authors);
+            }
+            book.setAuthors(authorsRealmList);
+        }
+        else
+        {
+            authors = new Authors();
+            authors.setAuthor("Brak info o autorach");
+            authorsRealmList.add(0, authors);
+
+            book.setAuthors(authorsRealmList);
+        }
+
+        if (categoriesList != null)
+        {
+            for (int k = 0; k < categoriesList.size(); k++)
+            {
+                categories = new Categories();
+                categories.setCategory(categoriesList.get(k));
+                categoriesRealmList.add(k, categories);
+            }
+            book.setCategories(categoriesRealmList);
+        }
+        else
+        {
+            categories = new Categories();
+            categories.setCategory("Brak kategorii");
+            categoriesRealmList.add(0, categories);
+
+            book.setCategories(categoriesRealmList);
+        }
+
+        if (imageLinks != null)
+        {
+            if (imageLinks.getSmallThumbnail() != null)
+            {
+                book.setSmallThumbnail(imageLinks.getSmallThumbnail());
+            }
+
+            if (imageLinks.getThumbnail() != null)
+            {
+                book.setThumbnail(imageLinks.getThumbnail());
+            }
+        }
+
+        if (industryIdentifierList != null)
+        {
+            for (int l = 0; l < industryIdentifierList.size(); l++)
+            {
+                industryIdentifier = new IndustryIdentifier();
+                industryIdentifier.setType(industryIdentifierList.get(l).getType());
+                industryIdentifier.setIdentifier(industryIdentifierList.get(l).getIdentifier());
+                industryIdentifiersRealmList.add(l, industryIdentifier);
+            }
+            book.setIndustryIdentifiers(industryIdentifiersRealmList);
+        }
+        else
+        {
+            industryIdentifier = new IndustryIdentifier();
+            industryIdentifier.setType("-");
+            industryIdentifier.setIdentifier("-");
+            industryIdentifiersRealmList.add(0, industryIdentifier);
+
+            book.setIndustryIdentifiers(industryIdentifiersRealmList);
+        }
+
+        book.setShelf(shelf);
+
+        realm.beginTransaction();
+        realm.copyToRealm(book);
+        realm.commitTransaction();
+
+        addBookToLibraryImageButton.setVisibility(View.INVISIBLE);
     }
 
     private void getBookInfoFromDatabase(String id)
@@ -446,16 +682,18 @@ public class AboutBookActivity extends AppCompatActivity
         // refresh the realm instance
         RealmController.with(this).refresh();
 
-        Boolean isInLibrary = getIntent().getExtras().getBoolean("isInLibrary");
-        String id = getIntent().getExtras().getString("id");
+        isInLibrary = getIntent().getExtras().getBoolean("isInLibrary");
+        googleBookId = getIntent().getExtras().getString("id");
 
         if (isInLibrary)
         {
-            getBookInfoFromDatabase(id);
+            getBookInfoFromDatabase(googleBookId);
+            addBookToLibraryImageButton.setVisibility(View.INVISIBLE);
         }
         else
         {
-            bookGoogleIdRequestWithRetrofit(id);
+            bookGoogleIdRequestWithRetrofit(googleBookId, false, 0);
+            addBookToLibraryImageButton.setVisibility(View.VISIBLE);
         }
     }
 }

@@ -1,32 +1,24 @@
 package pl.umk.mat.kacp3r.mobilnabiblioteka.utils;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-import java.util.List;
-import io.realm.Realm;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.R;
-import pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.search.Item;
-import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.search.SearchActivity;
-import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.search.SearchRecyclerViewAdapter;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.book.AboutBookActivity;
 
-public class AddBookDialog
+public class AddBookDialogInActivity
 {
-    SearchRecyclerViewAdapter searchRecyclerViewAdapter;
+    private AboutBookActivity aboutBookActivity;
 
-    public void showDialog(final List<Item> bookList,
-                           Context context,
-                           final SearchActivity searchActivity,
-                           final Realm realm,
+    public void showDialog(final AboutBookActivity aboutBookActivity,
                            String msg,
-                           final int i)
+                           final String googleBookId,
+                           Boolean isInLibrary)
     {
-        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(bookList, context, searchActivity);
 
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(aboutBookActivity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.add_book_to_library_custom_alert);
@@ -40,10 +32,10 @@ public class AddBookDialog
             @Override
             public void onClick(View v)
             {
-                searchRecyclerViewAdapter.addBookToDatabase(realm, 1, i);
-                dialog.dismiss();
+                aboutBookActivity.bookGoogleIdRequestWithRetrofit(googleBookId, false, 1);
 
-                searchActivity.makeToast("Książka została dodana na półkę");
+                aboutBookActivity.makeToast("Książka została dodana na półkę");
+                dialog.dismiss();
             }
         });
 
@@ -53,10 +45,10 @@ public class AddBookDialog
             @Override
             public void onClick(View v)
             {
-                searchRecyclerViewAdapter.addBookToDatabase(realm, 2, i);
-                dialog.dismiss();
+                aboutBookActivity.bookGoogleIdRequestWithRetrofit(googleBookId, false, 2);
 
-                searchActivity.makeToast("Książka została dodana na półkę");
+                aboutBookActivity.makeToast("Książka została dodana na półkę");
+                dialog.dismiss();
             }
         });
 
@@ -66,10 +58,10 @@ public class AddBookDialog
             @Override
             public void onClick(View v)
             {
-                searchRecyclerViewAdapter.addBookToDatabase(realm, 3, i);
-                dialog.dismiss();
+                aboutBookActivity.bookGoogleIdRequestWithRetrofit(googleBookId, false, 3);
 
-                searchActivity.makeToast("Książka została dodana na półkę");
+                aboutBookActivity.makeToast("Książka została dodana na półkę");
+                dialog.dismiss();
             }
         });
         dialog.show();

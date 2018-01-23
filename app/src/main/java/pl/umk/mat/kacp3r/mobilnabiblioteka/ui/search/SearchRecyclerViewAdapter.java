@@ -29,46 +29,23 @@ import pl.umk.mat.kacp3r.mobilnabiblioteka.model.IndustryIdentifier;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.RealmController;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.adapters.RealmRecyclerViewAdapter;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.book.AboutBookActivity;
-import pl.umk.mat.kacp3r.mobilnabiblioteka.utils.AddBookDialog;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.utils.AddBookDialogInRecyclerView;
 
-public class SearchRecyclerViewAdapter extends /*RecyclerView.Adapter<SearchRecyclerViewAdapter.ViewHolder>,*/
-        RealmRecyclerViewAdapter<Book>
+public class SearchRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
 {
     private List<Item> bookList;
     private List<String> authorsList;
-    //private static MyClickListener myClickListener;
     private Context context;
     private Realm realm;
     private SearchActivity searchActivity;
 
-    public SearchRecyclerViewAdapter(List<Item> bookList, Context context, SearchActivity searchActivity)
+    public SearchRecyclerViewAdapter(List<Item> bookList, Context context,SearchActivity searchActivity)
     {
         this.bookList = bookList;
         authorsList = new ArrayList<>();
         this.context = context;
         this.searchActivity = searchActivity;
     }
-
-    public SearchRecyclerViewAdapter(Context context)
-    {
-        this.context = context;
-    }
-
-    public void updateList(List<Item> list)
-    {
-        bookList = list;
-        notifyDataSetChanged();
-    }
-
-    /*
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
-    {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.searched_books_card_view_row, viewGroup, false);
-
-        return new ViewHolder(view);
-    }
-    */
 
     @Override
     public CardViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
@@ -126,7 +103,7 @@ public class SearchRecyclerViewAdapter extends /*RecyclerView.Adapter<SearchRecy
                 if (bookList.get(i).getVolumeInfo().getImageLinks().getThumbnail() != null
                         || !bookList.get(i).getVolumeInfo().getImageLinks().getThumbnail().isEmpty())
                 {
-                    Picasso.with(context)
+                    Picasso.with(context.getApplicationContext())
                             .load(bookInfo.getImageLinks().getThumbnail())
                             .fit()
                             .noFade()
@@ -160,35 +137,6 @@ public class SearchRecyclerViewAdapter extends /*RecyclerView.Adapter<SearchRecy
             }
         }
 
-        /*
-        holder.toReadAdd.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-               addBookToDatabase(1, i, view);
-            }
-        });
-
-        holder.progressAdd.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                addBookToDatabase(2, i, view);
-            }
-        });
-
-        holder.finishAdd.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                addBookToDatabase(3, i, view);
-            }
-        });
-        */
-
         holder.add.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -199,8 +147,8 @@ public class SearchRecyclerViewAdapter extends /*RecyclerView.Adapter<SearchRecy
 
                 if (book == null)
                 {
-                    AddBookDialog addBookDialog = new AddBookDialog();
-                    addBookDialog.showDialog(bookList, view.getContext(), searchActivity, realm, "Dodaj książkę do biblioteki", i);
+                    AddBookDialogInRecyclerView addBookDialogInRecyclerView = new AddBookDialogInRecyclerView();
+                    addBookDialogInRecyclerView.showDialog(bookList, context, searchActivity, realm, "Dodaj książkę do biblioteki", i);
                 }
                 else
                 {
@@ -398,47 +346,6 @@ public class SearchRecyclerViewAdapter extends /*RecyclerView.Adapter<SearchRecy
         realm.commitTransaction();
     }
 
-    /*
-    @Override
-    public void onBindViewHolder(SearchRecyclerViewAdapter.ViewHolder viewHolder, int i)
-    {
-        if (bookList.get(i).getVolumeInfo() != null)
-        {
-            VolumeInfo bookInfo = bookList.get(i).getVolumeInfo();
-            authorsList = bookInfo.getAuthors();
-
-            viewHolder.title.setText(bookInfo.getTitle());
-
-            if (authorsList != null)
-            {
-                StringBuilder builder = new StringBuilder();
-                for (String authors : authorsList)
-                {
-                    if (authorsList.toArray().length > 1)
-                    {
-                        builder.append(authors + ", ");
-                    }
-                    else
-                    {
-                        builder.append(authors + "");
-                    }
-                }
-                viewHolder.authors.setText(builder.toString());
-            }
-
-            if (bookInfo.getImageLinks() != null)
-            {
-                Picasso.with(context)
-                        .load(bookInfo.getImageLinks().getSmallThumbnail())
-                        .fit()
-                        .noFade()
-                        .centerCrop()
-                        .into(viewHolder.cover);
-            }
-        }
-    }
-    */
-
     @Override
     public int getItemCount()
     {
@@ -466,60 +373,8 @@ public class SearchRecyclerViewAdapter extends /*RecyclerView.Adapter<SearchRecy
             authors = (TextView) itemView.findViewById(R.id.authors);
             rate = (TextView) itemView.findViewById(R.id.rate_text_view);
             add = (Button) itemView.findViewById(R.id.add_button);
-            //toReadAdd = (ImageButton) itemView.findViewById(R.id.to_read_add);
-            //progressAdd = (ImageButton) itemView.findViewById(R.id.progress_add);
-            //finishAdd = (ImageButton) itemView.findViewById(R.id.finish_add);
-
-            //itemView.setOnClickListener(this);
         }
-
-        //@Override
-        //public void onClick(View v)
-        //{
-        //    myClickListener.onItemClick(getAdapterPosition(), v);
-        // }
     }
-
-    /*
-    public class ViewHolder extends RecyclerView.ViewHolder //implements View.OnClickListener
-    {
-        public ImageView cover;
-        public TextView title;
-        public TextView authors;
-        public ImageButton toReadAdd;
-        public ImageButton progressAdd;
-        public ImageButton finishAdd;
-
-        public ViewHolder(View itemView)
-        {
-            super(itemView);
-            cover = (ImageView) itemView.findViewById(R.id.cover);
-            title = (TextView) itemView.findViewById(R.id.title);
-            authors = (TextView) itemView.findViewById(R.id.authors);
-            toReadAdd = (ImageButton) itemView.findViewById(R.id.to_read_add);
-            progressAdd = (ImageButton) itemView.findViewById(R.id.progress_add);
-            finishAdd = (ImageButton) itemView.findViewById(R.id.finish_add);
-
-            //itemView.setOnClickListener(this);
-        }
-
-        //@Override
-       //public void onClick(View v)
-        //{
-        //    myClickListener.onItemClick(getAdapterPosition(), v);
-       // }
-    }
-    */
-
-    //public void setOnItemClickListener(MyClickListener myClickListener)
-    //{
-    //    this.myClickListener = myClickListener;
-    //}
-
-    //public interface MyClickListener
-   // {
-    //    void onItemClick(int position, View v);
-    //}
 
     @Override
     public long getItemId(int position) {

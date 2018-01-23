@@ -23,6 +23,19 @@
             android:background="@null"
             app:layout_constraintLeft_toLeftOf="parent"/>
 
+
+        <ImageButton
+            android:id="@+id/add_book_to_library_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:padding="10dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/add_book_to_library_icon" />
+
         <ImageView
             android:id="@+id/maturity_rating_image_view"
             android:layout_width="20dp"
