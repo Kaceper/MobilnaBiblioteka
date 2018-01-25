@@ -96,11 +96,11 @@ public class AboutBookActivity extends AppCompatActivity
         Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
     }
 
-    public void getAuthorOtherBooksWithetrofit(final String author)
+    public void getAuthorOtherBooksWithetrofit(final String author, final String title)
     {
         ((MobilnaBiblioteka) getApplication()).getNetComponent().inject(this);
         RestApi service = retrofit.create(RestApi.class);
-        Call<SearchResponse> call = service.getAuthorBooks("https://www.googleapis.com/books/v1/volumes?q=inauthor:" + "\"" + author + "\"" + "&maxResults=30");
+        Call<SearchResponse> call = service.getAuthorBooks("https://www.googleapis.com/books/v1/volumes?q=-"+ "\"" + title  + "\"" + "+" + "inauthor:" + author + "&maxResults=30");
 
         call.enqueue(new Callback<SearchResponse>()
         {
@@ -319,7 +319,7 @@ public class AboutBookActivity extends AppCompatActivity
 
                                 setBookDescription(description);
 
-                                getAuthorOtherBooksWithetrofit(authors.get(0));
+                                getAuthorOtherBooksWithetrofit(authors.get(0), title);
 
                                 setBibliographyInfo(publisher,
                                         isbnList,
@@ -584,7 +584,7 @@ public class AboutBookActivity extends AppCompatActivity
 
         setBookDescription(description);
 
-        getAuthorOtherBooksWithetrofit(authors.get(0));
+        getAuthorOtherBooksWithetrofit(authors.get(0), title);
 
         setBibliographyInfo(publisher,
                 isbnList,
