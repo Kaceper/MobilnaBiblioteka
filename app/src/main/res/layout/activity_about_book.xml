@@ -279,7 +279,7 @@
             android:layout_marginTop="8dp"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:text="WydaInformacjewca:"
+            android:text="Wydawca:"
             android:textColor="#747474"
             android:textSize="14sp"
             android:textStyle="bold"
