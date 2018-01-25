@@ -2,6 +2,9 @@ package pl.umk.mat.kacp3r.mobilnabiblioteka.ui.library;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,6 +84,10 @@ public class ProgressRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
                 .centerCrop()
                 .into(holder.cover);
 
+        holder.progressBar.setMax(book.getPageCount());
+        holder.progressBar.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+        holder.progressBar.setProgress((2/10) * (book.getPageCount()));
+
         holder.card.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -137,6 +145,7 @@ public class ProgressRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
     {
         public CardView card;
         public ImageView cover;
+        public ProgressBar progressBar;
         public TextView title;
         public TextView authors;
         public ImageButton remove;
@@ -150,6 +159,7 @@ public class ProgressRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
             super(itemView);
             card = (CardView) itemView.findViewById(R.id.card_view);
             cover = (ImageView) itemView.findViewById(R.id.cover);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.progress_bar);
             title = (TextView) itemView.findViewById(R.id.title);
             authors = (TextView) itemView.findViewById(R.id.authors);
             remove = (ImageButton) itemView.findViewById(R.id.remove_image_button);

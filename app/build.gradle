@@ -73,4 +73,7 @@ dependencies {
     // Realm
     implementation 'io.realm:realm-android:0.87.5'
     annotationProcessor 'io.realm:realm-android:0.87.5'
+
+    // MaterialProgressBar
+    compile 'me.zhanghai.android.materialprogressbar:library:1.4.2'
 }
