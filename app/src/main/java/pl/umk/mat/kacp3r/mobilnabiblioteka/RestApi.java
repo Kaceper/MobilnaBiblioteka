@@ -7,11 +7,12 @@ import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface RestApi
 {
     @GET("volumes")
-    Call<SearchResponse> getBooks(@Query("q") String id,
+    Call<SearchResponse> getBooks(@Query("q") String q,
                                   @Query("startIndex") int startIndex,
                                   @Query("maxResults") int maxResults,
                                   @Query("printType") String printType,
@@ -19,4 +20,7 @@ public interface RestApi
 
     @GET("volumes/{id}")
     Call<VolumeResponse> getBookInfo(@Path("id") String id);
+
+    @GET
+    Call<SearchResponse> getAuthorBooks(@Url String url);
 }

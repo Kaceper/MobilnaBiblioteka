@@ -3,6 +3,9 @@ package pl.umk.mat.kacp3r.mobilnabiblioteka.ui.book;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.View;
 import android.webkit.WebView;
@@ -29,6 +32,7 @@ import pl.umk.mat.kacp3r.mobilnabiblioteka.R;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.RestApi;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.about.VolumeResponse;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.search.Item;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.search.SearchResponse;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Authors;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Book;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Categories;
@@ -47,6 +51,8 @@ public class AboutBookActivity extends AppCompatActivity
 
     private String googleBookId;
     private Boolean isInLibrary;
+    private AuthorsBooksRecyclerViewAdapter authorsBooksRecyclerViewAdapter;
+    private List<Item> bookList;
 
     @Inject Retrofit retrofit;
     private Realm realm;
@@ -61,6 +67,7 @@ public class AboutBookActivity extends AppCompatActivity
     @BindView(R.id.ratings_count_text_view) TextView ratingsCountTextView;
     @BindView(R.id.publish_info_text_view) TextView publishInfoTextView;
     @BindView(R.id.description_webview) WebView descriptionWebView;
+    @BindView(R.id.recycler_view_author_books) RecyclerView recyclerViewAuthorBooks;
     @BindView(R.id.publisher_text_view) TextView publisherTextView;
     @BindView(R.id.isbn_text_view) TextView isbnTextView;
     @BindView(R.id.page_count_text_view) TextView pageCountTextView;
@@ -89,6 +96,48 @@ public class AboutBookActivity extends AppCompatActivity
         Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
     }
 
+    public void getAuthorOtherBooksWithetrofit(final String author)
+    {
+        ((MobilnaBiblioteka) getApplication()).getNetComponent().inject(this);
+        RestApi service = retrofit.create(RestApi.class);
+        Call<SearchResponse> call = service.getAuthorBooks("https://www.googleapis.com/books/v1/volumes?q=inauthor:" + "\"" + author + "\"" + "&maxResults=30");
+
+        call.enqueue(new Callback<SearchResponse>()
+        {
+            @Override
+            public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response)
+            {
+                bookList = new ArrayList<>();
+
+                if (response.isSuccessful())
+                {
+                    if (response.body() != null)
+                    {
+                        if (response.body().getItems() != null)
+                        {
+                            bookList = response.body().getItems();
+
+                            authorsBooksRecyclerViewAdapter = new AuthorsBooksRecyclerViewAdapter(getApplicationContext(), AboutBookActivity.this,  bookList);
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+                            layoutManager.setReverseLayout(false);
+                            recyclerViewAuthorBooks.setLayoutManager(layoutManager);
+                            recyclerViewAuthorBooks.setItemAnimator(new DefaultItemAnimator());
+                            recyclerViewAuthorBooks.setHorizontalScrollBarEnabled(false);
+                            recyclerViewAuthorBooks.setHasFixedSize(true);
+                            recyclerViewAuthorBooks.setAdapter(authorsBooksRecyclerViewAdapter);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SearchResponse> call, Throwable t)
+            {
+
+            }
+        });
+    }
+
     public void bookGoogleIdRequestWithRetrofit(final String id, final Boolean isInLibrary, final int shelf)
     {
         ((MobilnaBiblioteka) getApplication()).getNetComponent().inject(this);
@@ -108,8 +157,8 @@ public class AboutBookActivity extends AppCompatActivity
                         {
                             String maturityRating;
                             String title;
-                            List<String> authors = null;
-                            List<String> categories = null;
+                            List<String> authors;
+                            List<String> categories;
                             String thumbnailUrl = null;
                             String rate;
                             int ratingsCount;
@@ -145,6 +194,7 @@ public class AboutBookActivity extends AppCompatActivity
                             }
                             else
                             {
+                                authors = new ArrayList<>();
                                 authors.add(0, "Brak info o autorach");
                             }
 
@@ -154,6 +204,7 @@ public class AboutBookActivity extends AppCompatActivity
                             }
                             else
                             {
+                                categories = new ArrayList<>();
                                 categories.add(0, "Brak kategorii");
                             }
 
@@ -267,6 +318,8 @@ public class AboutBookActivity extends AppCompatActivity
                                         publishedDate);
 
                                 setBookDescription(description);
+
+                                getAuthorOtherBooksWithetrofit(authors.get(0));
 
                                 setBibliographyInfo(publisher,
                                         isbnList,
@@ -530,6 +583,8 @@ public class AboutBookActivity extends AppCompatActivity
                 publishedDate);
 
         setBookDescription(description);
+
+        getAuthorOtherBooksWithetrofit(authors.get(0));
 
         setBibliographyInfo(publisher,
                 isbnList,

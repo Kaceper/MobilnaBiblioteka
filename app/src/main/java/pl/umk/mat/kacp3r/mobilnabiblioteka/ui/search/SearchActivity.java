@@ -20,6 +20,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -58,6 +59,7 @@ public class SearchActivity extends AppCompatActivity
     @BindView(R.id.bottom_navigation_view) BottomNavigationViewEx bottomNavigationViewEx;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.search_editText) EditText searchEditText;
+    @BindView(R.id.hint_linear_layout) LinearLayout hintLinearLayout;
     //@BindView(R.id.search_button) Button searchButton;
     //@BindView(R.id.search_book_image_button) ImageButton searchBookImageButton;
     @BindView(R.id.barcode_scan_image_button) ImageButton barcodeScanImageButton;
@@ -228,6 +230,7 @@ public class SearchActivity extends AppCompatActivity
                         handlePagination();
                         recyclerView.setAdapter(null);
 
+                        hintLinearLayout.setVisibility(View.INVISIBLE);
                         emptySearchResultTextView.setVisibility(View.VISIBLE);
 
                         getWindow().clearFlags(

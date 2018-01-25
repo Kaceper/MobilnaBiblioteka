@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,98 +8,98 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageButton
             android:id="@+id/back_top_image_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            app:srcCompat="@drawable/back_top_icon"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"
             android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:background="@null"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+            android:padding="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/back_top_icon" />
 
 
         <ImageButton
             android:id="@+id/add_book_to_library_image_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:padding="10dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
+            android:background="@null"
+            android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/add_book_to_library_icon" />
 
         <ImageView
             android:id="@+id/maturity_rating_image_view"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toTopOf="@+id/thumbnail"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/back_top_image_button"/>
+            app:layout_constraintTop_toBottomOf="@+id/back_top_image_button" />
 
         <TextView
             android:id="@+id/title_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
             android:fontFamily="sans-serif"
             android:textColor="#747474"
-            android:textSize="20sp"
-            app:layout_constraintRight_toRightOf="parent"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/maturity_rating_image_view"
-            app:layout_constraintTop_toBottomOf="@+id/back_top_image_button"/>
+            app:layout_constraintTop_toBottomOf="@+id/back_top_image_button" />
 
         <ImageView
             android:id="@+id/thumbnail"
             android:layout_width="150dp"
             android:layout_height="240dp"
             android:layout_marginLeft="16dp"
-            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/title_text_view"/>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_text_view" />
 
         <TextView
             android:id="@+id/authors_text_view"
             android:layout_width="0dp"
-            android:textSize="16sp"
-            android:fontFamily="sans-serif"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:maxLines="4"
-            android:scrollHorizontally="false"
             android:layout_height="wrap_content"
-            android:textColor="#747474"
-            android:layout_marginTop="6dp"
-            app:layout_constraintLeft_toRightOf="@+id/thumbnail"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="8dp"
+            android:layout_marginTop="6dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:maxLines="4"
+            android:scrollHorizontally="false"
+            android:textColor="#747474"
+            android:textSize="16sp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toRightOf="@+id/thumbnail"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/thumbnail"
-            app:layout_constraintHorizontal_bias="0.0" />
+            app:layout_constraintTop_toTopOf="@+id/thumbnail" />
 
         <RatingBar
             android:id="@+id/rating"
+            style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?android:attr/ratingBarStyleSmall"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="8dp"
+            android:isIndicator="true"
             android:numStars="5"
             android:stepSize="0.1"
-            android:isIndicator="true"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/authors_text_view"
             app:layout_constraintLeft_toRightOf="@+id/thumbnail"
-            android:layout_marginLeft="14dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/authors_text_view" />
 
         <TextView
             android:id="@+id/ratings_count_text_view"
@@ -131,106 +130,147 @@
             android:id="@+id/publish_info_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:ellipsize="end"
+            android:fontFamily="sans-serif"
             android:maxLines="2"
             android:scrollHorizontally="false"
             android:textColor="#747474"
             android:textSize="14sp"
-            android:fontFamily="sans-serif"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toRightOf="@+id/thumbnail"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/rating"
-            android:layout_marginRight="8dp"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"/>
+            app:layout_constraintTop_toBottomOf="@+id/rating" />
 
         <ImageView
             android:id="@+id/description_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/textsheet_icon"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/description_webview"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/thumbnail"
             android:layout_marginLeft="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/description_title_text_view"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/description_title_text_view"
             app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintVertical_chainStyle="packed"/>
+            app:srcCompat="@drawable/textsheet_icon" />
 
         <TextView
             android:id="@+id/description_title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="Opis"
             android:textColor="#3A3A3A"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/description_webview"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toRightOf="@+id/description_icon"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/thumbnail"
-            app:layout_constraintVertical_bias="0.0"/>
+            app:layout_constraintStart_toEndOf="@+id/description_icon"
+            app:layout_constraintTop_toBottomOf="@+id/thumbnail" />
 
         <WebView
             android:id="@+id/description_webview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|left"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif"
             android:gravity="left"
             android:textColor="#747474"
             android:textSize="14sp"
-            android:fontFamily="sans-serif"
-            app:layout_constraintTop_toBottomOf="@+id/description_icon"
-            app:layout_constraintBottom_toTopOf="@+id/bibliography_info_icon"
-            android:layout_marginLeft="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_view_author_books"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/description_title_text_view"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="WebViewLayout" />
+
+        <ImageView
+            android:id="@+id/author_icon"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/author_books_title_text_view"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/author_books_title_text_view"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/author" />
+
+        <TextView
+            android:id="@+id/author_books_title_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Książki autora"
+            android:textColor="#3A3A3A"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_view_author_books"
             app:layout_constraintHorizontal_bias="0.0"
-            android:layout_marginRight="16dp">
-        </WebView>
+            app:layout_constraintLeft_toRightOf="@+id/author_icon"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/description_webview"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_chainStyle="spread_inside" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_author_books"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@null"
+            android:scrollbars="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/bibliography_info_text_view"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/author_books_title_text_view" />
 
         <ImageView
             android:id="@+id/bibliography_info_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/bibliography_info_icon"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/description_webview"
             android:layout_marginLeft="16dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintRight_toLeftOf="@+id/bibliography_info_text_view"
             android:layout_marginRight="8dp"
-            app:layout_constraintHorizontal_bias="0.0"/>
+            app:layout_constraintBottom_toBottomOf="@+id/bibliography_info_text_view"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/bibliography_info_text_view"
+            app:layout_constraintTop_toTopOf="@+id/bibliography_info_text_view"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/bibliography_info_icon" />
 
         <TextView
             android:id="@+id/bibliography_info_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Informacje bibliograficzne"
-            android:gravity="center"
-            android:textColor="#3A3A3A"
-            android:textSize="18sp"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/description_icon"
             android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/description_webview"
+            android:gravity="center"
+            android:text="Informacje bibliograficzne"
+            android:textColor="#3A3A3A"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="0.0"/>
+            app:layout_constraintLeft_toRightOf="@+id/description_icon"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_view_author_books"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/publisher_title_text_view"
@@ -239,12 +279,12 @@
             android:layout_marginTop="8dp"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:text="Wydawca:"
+            android:text="WydaInformacjewca:"
             android:textColor="#747474"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="@+id/bibliography_info_text_view"
-            app:layout_constraintTop_toBottomOf="@+id/bibliography_info_text_view"/>
+            app:layout_constraintTop_toBottomOf="@+id/bibliography_info_text_view" />
 
         <TextView
             android:id="@+id/publisher_text_view"
@@ -267,59 +307,59 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/publisher_title_text_view"
             app:layout_constraintTop_toBottomOf="@+id/bibliography_info_text_view"
-            app:layout_constraintVertical_bias="0.0"/>
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/isbn_title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="ISBN:"
             android:textColor="#747474"
             android:textSize="14sp"
-            android:fontFamily="sans-serif"
             android:textStyle="bold"
-            android:text="ISBN:"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/publisher_title_text_view"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="0dp"
-            app:layout_constraintLeft_toLeftOf="@+id/bibliography_info_text_view"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintVertical_bias="0.0"/>
+            app:layout_constraintLeft_toLeftOf="@+id/bibliography_info_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/publisher_title_text_view"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/isbn_text_view"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:textColor="#747474"
-            android:textSize="14sp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="sans-serif"
             android:gravity="center"
+            android:textColor="#747474"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/publisher_text_view"
-            app:layout_constraintVertical_bias="0.0"
             app:layout_constraintLeft_toRightOf="@+id/isbn_title_text_view"
-            android:layout_marginLeft="4dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/publisher_text_view"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/page_count_title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="Liczba stron:"
             android:textColor="#747474"
             android:textSize="14sp"
-            android:fontFamily="sans-serif"
             android:textStyle="bold"
-            android:text="Liczba stron:"
-            android:gravity="center"
-            android:layout_marginLeft="0dp"
-            app:layout_constraintLeft_toLeftOf="@+id/bibliography_info_text_view"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="8dp"
+            app:layout_constraintLeft_toLeftOf="@+id/bibliography_info_text_view"
             app:layout_constraintTop_toBottomOf="@+id/isbn_title_text_view"
-            app:layout_constraintVertical_bias="0.0"/>
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/page_count_text_view"
@@ -335,7 +375,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/page_count_title_text_view"
             app:layout_constraintTop_toBottomOf="@+id/isbn_text_view"
-            app:layout_constraintVertical_bias="0.0"/>
+            app:layout_constraintVertical_bias="0.0" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

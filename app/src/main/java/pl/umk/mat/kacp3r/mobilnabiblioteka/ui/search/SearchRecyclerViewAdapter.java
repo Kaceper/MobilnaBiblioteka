@@ -39,7 +39,7 @@ public class SearchRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
     private Realm realm;
     private SearchActivity searchActivity;
 
-    public SearchRecyclerViewAdapter(List<Item> bookList, Context context,SearchActivity searchActivity)
+    public SearchRecyclerViewAdapter(List<Item> bookList, Context context, SearchActivity searchActivity)
     {
         this.bookList = bookList;
         authorsList = new ArrayList<>();
