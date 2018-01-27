@@ -2,6 +2,8 @@ package pl.umk.mat.kacp3r.mobilnabiblioteka.ui.search;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmList;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.R;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.search.Item;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.search.VolumeInfo;
@@ -134,6 +137,27 @@ public class SearchRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
                         .placeholder(R.drawable.books_placeholder)
                         .error(R.drawable.books_placeholder)
                         .into(holder.cover);
+            }
+
+            Book book = RealmController.with(searchActivity).getBook(bookList.get(i).getId());
+            if (book != null)
+            {
+                holder.progressBar.setVisibility(View.VISIBLE);
+                holder.progressBar.setMax(book.getPageCount());
+                holder.progressBar.setProgress(book.getReadedPageCount());
+
+                if (book.getReadedPageCount() == book.getPageCount())
+                {
+                    holder.progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#008000")));
+                }
+                else
+                {
+                    holder.progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#FFD700")));
+                }
+            }
+            else
+            {
+                holder.progressBar.setVisibility(View.INVISIBLE);
             }
         }
 
@@ -356,6 +380,7 @@ public class SearchRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
     {
         public CardView card;
         public ImageView cover;
+        public MaterialProgressBar progressBar;
         public TextView title;
         public TextView authors;
         public TextView rate;
@@ -369,6 +394,7 @@ public class SearchRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
             super(itemView);
             card = (CardView) itemView.findViewById(R.id.card_view);
             cover = (ImageView) itemView.findViewById(R.id.cover);
+            progressBar = (MaterialProgressBar) itemView.findViewById(R.id.progress_bar);
             title = (TextView) itemView.findViewById(R.id.title);
             authors = (TextView) itemView.findViewById(R.id.authors);
             rate = (TextView) itemView.findViewById(R.id.rate_text_view);
