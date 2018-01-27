@@ -91,7 +91,8 @@ public class AboutBookActivity extends AppCompatActivity
     @OnClick(R.id.add_book_to_library_image_button)
     public void setAddBookToLibraryImageButtonClick()
     {
-
+        AddBookDialogInActivity addBookDialogInActivity = new AddBookDialogInActivity();
+        addBookDialogInActivity.showDialog(AboutBookActivity.this, "Dodaj książkę do biblioteki", googleBookId, false);
     }
 
     @OnClick(R.id.mark_as_read_image_button)
@@ -328,8 +329,8 @@ public class AboutBookActivity extends AppCompatActivity
                                 setBookMainInformations(maturityRating,
                                         title,
                                         thumbnailUrl,
-                                        pageCount,
                                         readedPageCount,
+                                        pageCount,
                                         authors,
                                         rate,
                                         ratingsCount,
@@ -343,6 +344,7 @@ public class AboutBookActivity extends AppCompatActivity
                                 setBibliographyInfo(publisher,
                                         isbnList,
                                         pageCount);
+
                             }
                         }
                     }
@@ -402,23 +404,8 @@ public class AboutBookActivity extends AppCompatActivity
             book.setDescription("Brak opisu");
         }
 
-        if (pageCount >= 0)
-        {
-            if (shelf == 3)
-            {
-                book.setReadedPageCount(pageCount);
-            }
-            else
-            {
-                book.setReadedPageCount(0);
-            }
-
-            book.setPageCount(pageCount);
-        }
-        else
-        {
-            book.setPageCount(0);
-        }
+        book.setPageCount(pageCount);
+        book.setReadedPageCount(0);
 
         if (averageRating != null)
         {
@@ -544,6 +531,8 @@ public class AboutBookActivity extends AppCompatActivity
         realm.commitTransaction();
 
         addBookToLibraryImageButton.setVisibility(View.INVISIBLE);
+
+        getBookInfoFromDatabase(googleBookId);
     }
 
     private void getBookInfoFromDatabase(String id)
@@ -593,7 +582,10 @@ public class AboutBookActivity extends AppCompatActivity
             isbnList.add(i, book.getIndustryIdentifiers().get(i).getIdentifier());
         }
 
+        readedPageCount = book.getReadedPageCount();
         pageCount = book.getPageCount();
+
+        handleDescriptionMargin();
 
         setBookMainInformations(maturityRating,
                 title,
@@ -626,6 +618,8 @@ public class AboutBookActivity extends AppCompatActivity
                                          String publisher,
                                          String publishedDate)
     {
+        makeToast(readedPageCount + "");
+
         if (maturityRating.equals("MATURE"))
         {
             maturityRatingImageView.setImageResource(R.drawable.above_18);
