@@ -209,13 +209,13 @@ public class SearchRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
             if (shelf == 3)
             {
                 book.setReadedPageCount(bookList.get(position).getVolumeInfo().getPageCount());
+                book.setPageCount(bookList.get(position).getVolumeInfo().getPageCount());
             }
             else
             {
                 book.setReadedPageCount(0);
+                book.setPageCount(bookList.get(position).getVolumeInfo().getPageCount());
             }
-
-            book.setPageCount(bookList.get(position).getVolumeInfo().getPageCount());
         }
         else
         {

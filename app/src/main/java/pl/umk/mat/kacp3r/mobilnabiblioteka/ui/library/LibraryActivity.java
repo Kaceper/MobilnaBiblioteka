@@ -200,7 +200,29 @@ public class LibraryActivity extends AppCompatActivity
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState)
     {
-        //super.onSaveInstanceState(outState, outPersistentState);
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+
+        if (libraryRadioGroup.getCheckedRadioButtonId() == R.id.to_read_radio)
+        {
+            changeFragment(toReadRadioButton);
+        }
+        else if (libraryRadioGroup.getCheckedRadioButtonId() == R.id.progress_radio)
+        {
+            changeFragment(progressRadioButton);
+        }
+        else
+        {
+            changeFragment(finishedRadioButton);
+        }
+
+        handleFragmentsContainerMargin();
+        setPageCountTextView();
     }
 
     @Override

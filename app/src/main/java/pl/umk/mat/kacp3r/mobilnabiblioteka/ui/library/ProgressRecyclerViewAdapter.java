@@ -90,7 +90,7 @@ public class ProgressRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
                 .into(holder.cover);
 
         holder.progressBar.setMax(book.getPageCount());
-        holder.progressBar.setProgress(80);
+        holder.progressBar.setProgress(book.getReadedPageCount());
 
         holder.card.setOnClickListener(new View.OnClickListener()
         {
@@ -115,6 +115,7 @@ public class ProgressRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
                 //removeBookDialog.showDialog(context, libraryActivity, "Usuń książkę z bazy danych", 1, book.getGoogleBookId(), viewHolder.getAdapterPosition(), getItemCount(), recyclerView);
 
                 removeBookFromDatabase(i);
+                libraryActivity.setPageCountTextView();
             }
         });
     }

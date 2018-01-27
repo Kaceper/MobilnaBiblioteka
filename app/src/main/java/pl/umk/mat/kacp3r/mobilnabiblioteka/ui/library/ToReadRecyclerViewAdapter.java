@@ -106,6 +106,7 @@ public class ToReadRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
                 //removeBookDialog.showDialog(context, libraryActivity, "Usuń książkę z bazy danych", 1, book.getGoogleBookId(), viewHolder.getAdapterPosition(), getItemCount(), recyclerView);
 
                 removeBookFromDatabase(i);
+                libraryActivity.setPageCountTextView();
             }
         });
     }

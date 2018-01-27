@@ -1,7 +1,10 @@
 package pl.umk.mat.kacp3r.mobilnabiblioteka.ui.book;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +15,7 @@ import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmList;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.MobilnaBiblioteka;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.R;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.RestApi;
@@ -40,6 +45,7 @@ import pl.umk.mat.kacp3r.mobilnabiblioteka.model.ImageLinks;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.IndustryIdentifier;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.RealmController;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.utils.AddBookDialogInActivity;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.utils.MarkAsReadDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -57,11 +63,15 @@ public class AboutBookActivity extends AppCompatActivity
     @Inject Retrofit retrofit;
     private Realm realm;
 
+    @BindView(R.id.constraint_layout) ConstraintLayout constraintLayout;
     @BindView(R.id.maturity_rating_image_view) ImageView maturityRatingImageView;
     @BindView(R.id.back_top_image_button) ImageButton backTopImageButton;
     @BindView(R.id.add_book_to_library_image_button) ImageButton addBookToLibraryImageButton;
     @BindView(R.id.title_text_view) TextView titleTextView;
     @BindView(R.id.thumbnail) ImageView thumbnailImageView;
+    @BindView(R.id.progress_bar) MaterialProgressBar progressBar;
+    @BindView(R.id.seek_bar) SeekBar seekBar;
+    @BindView(R.id.mark_as_read_image_button) ImageButton markAsReadImageButton;
     @BindView(R.id.authors_text_view) TextView authorsTextView;
     @BindView(R.id.rating) RatingBar ratingBar;
     @BindView(R.id.ratings_count_text_view) TextView ratingsCountTextView;
@@ -81,8 +91,14 @@ public class AboutBookActivity extends AppCompatActivity
     @OnClick(R.id.add_book_to_library_image_button)
     public void setAddBookToLibraryImageButtonClick()
     {
-        AddBookDialogInActivity addBookDialogInActivity = new AddBookDialogInActivity();
-        addBookDialogInActivity.showDialog(this,  "Dodaj książkę do biblioteki", googleBookId, false);
+
+    }
+
+    @OnClick(R.id.mark_as_read_image_button)
+    public void markAsReadImageButtonClick()
+    {
+        MarkAsReadDialog markAsReadDialog = new MarkAsReadDialog();
+        markAsReadDialog.showDialog(AboutBookActivity.this,"Oznacz książkę jako przeczytaną", googleBookId);
     }
 
     @Override
@@ -167,6 +183,7 @@ public class AboutBookActivity extends AppCompatActivity
                             String description;
                             List<String> isbnList;
                             int pageCount;
+                            int readedPageCount = 0;
                             pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.about.ImageLinks imageLinks = null;
                             List<pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.about.IndustryIdentifier> industryIdentifiers = null;
 
@@ -311,6 +328,8 @@ public class AboutBookActivity extends AppCompatActivity
                                 setBookMainInformations(maturityRating,
                                         title,
                                         thumbnailUrl,
+                                        pageCount,
+                                        readedPageCount,
                                         authors,
                                         rate,
                                         ratingsCount,
@@ -541,6 +560,7 @@ public class AboutBookActivity extends AppCompatActivity
         String publishedDate;
         String description;
         List<String> isbnList;
+        int readedPageCount;
         int pageCount;
 
         maturityRating = book.getMaturityRating();
@@ -556,6 +576,8 @@ public class AboutBookActivity extends AppCompatActivity
         thumbnailUrl = book.getThumbnail();
 
         rate = book.getAverageRating().toString();
+
+        readedPageCount = book.getReadedPageCount();
 
         ratingsCount = book.getRatingsCount();
 
@@ -576,6 +598,8 @@ public class AboutBookActivity extends AppCompatActivity
         setBookMainInformations(maturityRating,
                 title,
                 thumbnailUrl,
+                readedPageCount,
+                pageCount,
                 authors,
                 rate,
                 ratingsCount,
@@ -594,6 +618,8 @@ public class AboutBookActivity extends AppCompatActivity
     private void setBookMainInformations(String maturityRating,
                                          String title,
                                          String thumbnail,
+                                         final int readedPageCount,
+                                         final int pageCount,
                                          List<String> authorsList,
                                          String rate,
                                          int ratingsCount,
@@ -637,6 +663,47 @@ public class AboutBookActivity extends AppCompatActivity
                     .error(R.drawable.books_placeholder)
                     .into(thumbnailImageView);
         }
+
+        progressBar.setMax(pageCount);
+        setProgressBarProgress(readedPageCount, pageCount);
+
+        seekBar.setMax(pageCount);
+        seekBar.setProgress(readedPageCount);
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser)
+            {
+                realm.executeTransaction(new Realm.Transaction()
+                {
+                    @Override
+                    public void execute (Realm realm)
+                    {
+                        Book book = realm.where(Book.class).equalTo("googleBookId", googleBookId).findFirst();
+                        if(book != null)
+                        {
+                            book.setReadedPageCount(progress);
+                        }
+                    }
+                });
+
+                setProgressBarProgress(progress, pageCount);
+                checkForSeekBarValue(progress, pageCount);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar)
+            {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar)
+            {
+
+            }
+        });
 
         if (!publishedDate.equals("NO_DATE"))
         {
@@ -722,6 +789,123 @@ public class AboutBookActivity extends AppCompatActivity
         }
     }
 
+    private void setProgressBarProgress(int pageReaded, int pageCount)
+    {
+        if (pageReaded == pageCount)
+        {
+            progressBar.setProgress(pageReaded);
+
+            progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#008000")));
+        }
+        else
+        {
+            progressBar.setProgress(pageReaded);
+
+            progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#FFD700")));
+        }
+    }
+
+    private void checkForSeekBarValue(int pageReaded, int pageCount)
+    {
+        if (pageReaded == pageCount)
+        {
+            MarkAsReadDialog markAsReadDialog = new MarkAsReadDialog();
+            markAsReadDialog.showDialog(AboutBookActivity.this, "Oznacz książkę jako przeczytaną", googleBookId);
+        }
+        else if (pageReaded > 0)
+        {
+            realm.executeTransaction(new Realm.Transaction()
+            {
+                @Override
+                public void execute (Realm realm)
+                {
+                    Book book = realm.where(Book.class).equalTo("googleBookId", googleBookId).equalTo("shelf", 1).findFirst();
+                    if(book != null)
+                    {
+                        book.setShelf(2);
+                    }
+                }
+            });
+        }
+    }
+
+    public void moveBookToFinishedShelf(final String googleBookId)
+    {
+        progressBar.setProgress(progressBar.getMax());
+
+        realm.executeTransaction(new Realm.Transaction()
+        {
+            @Override
+            public void execute (Realm realm)
+            {
+                Book book = realm.where(Book.class).equalTo("googleBookId", googleBookId).findFirst();
+                if(book != null)
+                {
+                    book.setShelf(3);
+                    book.setReadedPageCount(book.getPageCount());
+                }
+            }
+        });
+        handleDescriptionMargin();
+    }
+
+    public void moveBackSeekBar()
+    {
+        realm.executeTransaction(new Realm.Transaction()
+        {
+            @Override
+            public void execute (Realm realm)
+            {
+                Book book = realm.where(Book.class).equalTo("googleBookId", googleBookId).findFirst();
+                if(book != null)
+                {
+                    book.setReadedPageCount(seekBar.getMax() - 1);
+                }
+            }
+        });
+
+        seekBar.setProgress(seekBar.getMax() - 1);
+        setProgressBarProgress(seekBar.getMax() - 1, seekBar.getMax());
+        checkForSeekBarValue(seekBar.getMax() - 1, seekBar.getMax());
+    }
+
+    private void handleDescriptionMargin()
+    {
+        if (realm.where(Book.class).equalTo("googleBookId", googleBookId).findFirst() != null)
+        {
+            if (realm.where(Book.class).equalTo("googleBookId", googleBookId).equalTo("shelf", 3).findFirst() != null)
+            {
+                ConstraintSet constraintSet = new ConstraintSet();
+                constraintSet.clone(constraintLayout);
+                constraintSet.connect(R.id.description_title_text_view, ConstraintSet.TOP, R.id.thumbnail, ConstraintSet.BOTTOM, 32);
+                constraintSet.applyTo(constraintLayout);
+
+                seekBar.setVisibility(View.INVISIBLE);
+                markAsReadImageButton.setVisibility(View.INVISIBLE);
+            }
+            else
+            {
+                ConstraintSet constraintSet = new ConstraintSet();
+                constraintSet.clone(constraintLayout);
+                constraintSet.connect(R.id.description_title_text_view, ConstraintSet.TOP, R.id.seek_bar, ConstraintSet.BOTTOM, 32);
+                constraintSet.applyTo(constraintLayout);
+
+                seekBar.setVisibility(View.VISIBLE);
+                markAsReadImageButton.setVisibility(View.VISIBLE);
+            }
+        }
+        else
+        {
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(constraintLayout);
+            constraintSet.connect(R.id.description_title_text_view, ConstraintSet.TOP, R.id.thumbnail, ConstraintSet.BOTTOM, 32);
+            constraintSet.applyTo(constraintLayout);
+
+            seekBar.setVisibility(View.INVISIBLE);
+            markAsReadImageButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -750,5 +934,7 @@ public class AboutBookActivity extends AppCompatActivity
             bookGoogleIdRequestWithRetrofit(googleBookId, false, 0);
             addBookToLibraryImageButton.setVisibility(View.VISIBLE);
         }
+
+        handleDescriptionMargin();
     }
 }
