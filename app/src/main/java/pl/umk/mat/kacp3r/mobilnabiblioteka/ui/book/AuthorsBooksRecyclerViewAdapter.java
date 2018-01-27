@@ -2,6 +2,8 @@ package pl.umk.mat.kacp3r.mobilnabiblioteka.ui.book;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,8 +14,11 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import java.util.List;
+
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.R;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.search.Item;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Book;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.RealmController;
 
 public class AuthorsBooksRecyclerViewAdapter extends RecyclerView.Adapter<AuthorsBooksRecyclerViewAdapter.ViewHolder>
@@ -78,6 +83,27 @@ public class AuthorsBooksRecyclerViewAdapter extends RecyclerView.Adapter<Author
                     .into(viewHolder.bookCover);
         }
 
+        Book book = RealmController.with(aboutBookActivity).getBook(authorBooks.get(i).getId());
+        if (book != null)
+        {
+            viewHolder.progressBar.setVisibility(View.VISIBLE);
+            viewHolder.progressBar.setMax(book.getPageCount());
+            viewHolder.progressBar.setProgress(book.getReadedPageCount());
+
+            if (book.getReadedPageCount() == book.getPageCount())
+            {
+                viewHolder.progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#008000")));
+            }
+            else
+            {
+                viewHolder.progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#FFD700")));
+            }
+        }
+        else
+        {
+            viewHolder.progressBar.setVisibility(View.INVISIBLE);
+        }
+
         viewHolder.bookTitle.setText(authorBooks.get(i).getVolumeInfo().getTitle());
 
         viewHolder.cardView.setOnClickListener(new View.OnClickListener()
@@ -105,6 +131,7 @@ public class AuthorsBooksRecyclerViewAdapter extends RecyclerView.Adapter<Author
     {
         private CardView cardView;
         private ImageView bookCover;
+        private MaterialProgressBar progressBar;
         private TextView bookTitle;
 
         public ViewHolder(View itemView)
@@ -113,6 +140,7 @@ public class AuthorsBooksRecyclerViewAdapter extends RecyclerView.Adapter<Author
 
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             bookCover = (ImageView) itemView.findViewById(R.id.book_cover);
+            progressBar = (MaterialProgressBar) itemView.findViewById(R.id.progress_bar);
             bookTitle = (TextView) itemView.findViewById(R.id.title);
 
             itemView.setOnClickListener(this);

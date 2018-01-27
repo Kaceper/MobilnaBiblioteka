@@ -32,7 +32,7 @@ public class AddBookDialogInActivity
             @Override
             public void onClick(View v)
             {
-                aboutBookActivity.bookGoogleIdRequestWithRetrofit(googleBookId, false, 1);
+                aboutBookActivity.bookGoogleIdRequestWithRetrofit(googleBookId, true, 1);
 
                 aboutBookActivity.makeToast("Książka została dodana na półkę");
                 dialog.dismiss();
@@ -45,7 +45,7 @@ public class AddBookDialogInActivity
             @Override
             public void onClick(View v)
             {
-                aboutBookActivity.bookGoogleIdRequestWithRetrofit(googleBookId, false, 2);
+                aboutBookActivity.bookGoogleIdRequestWithRetrofit(googleBookId, true, 2);
 
                 aboutBookActivity.makeToast("Książka została dodana na półkę");
                 dialog.dismiss();
@@ -58,7 +58,7 @@ public class AddBookDialogInActivity
             @Override
             public void onClick(View v)
             {
-                aboutBookActivity.bookGoogleIdRequestWithRetrofit(googleBookId, false, 3);
+                aboutBookActivity.bookGoogleIdRequestWithRetrofit(googleBookId, true, 3);
 
                 aboutBookActivity.makeToast("Książka została dodana na półkę");
                 dialog.dismiss();

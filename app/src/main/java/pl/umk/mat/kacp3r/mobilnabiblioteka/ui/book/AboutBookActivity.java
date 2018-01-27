@@ -41,7 +41,6 @@ import pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.search.SearchResponse;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Authors;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Book;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Categories;
-import pl.umk.mat.kacp3r.mobilnabiblioteka.model.ImageLinks;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.IndustryIdentifier;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.RealmController;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.utils.AddBookDialogInActivity;
@@ -184,7 +183,7 @@ public class AboutBookActivity extends AppCompatActivity
                             String description;
                             List<String> isbnList;
                             int pageCount;
-                            int readedPageCount = 0;
+                            int readedPageCount;
                             pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.about.ImageLinks imageLinks = null;
                             List<pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.about.IndustryIdentifier> industryIdentifiers = null;
 
@@ -307,12 +306,22 @@ public class AboutBookActivity extends AppCompatActivity
                                 pageCount = 0;
                             }
 
-                            if (isInLibrary == false && shelf != 0)
+                            if (shelf == 3)
+                            {
+                                readedPageCount = pageCount;
+                            }
+                            else
+                            {
+                                readedPageCount = 0;
+                            }
+
+                            if (isInLibrary && shelf != 0)
                             {
                                 addBookToDatabase(realm,
                                         shelf,
                                         title,
                                         description,
+                                        readedPageCount,
                                         pageCount,
                                         rate,
                                         ratingsCount,
@@ -322,7 +331,8 @@ public class AboutBookActivity extends AppCompatActivity
                                         authors,
                                         categories,
                                         imageLinks,
-                                        industryIdentifiers);
+                                        industryIdentifiers,
+                                        isInLibrary);
                             }
                             else
                             {
@@ -335,7 +345,8 @@ public class AboutBookActivity extends AppCompatActivity
                                         rate,
                                         ratingsCount,
                                         publisher,
-                                        publishedDate);
+                                        publishedDate,
+                                        isInLibrary);
 
                                 setBookDescription(description);
 
@@ -363,6 +374,7 @@ public class AboutBookActivity extends AppCompatActivity
                                   int shelf,
                                   String title,
                                   String desciption,
+                                  int readedPageCount,
                                   int pageCount,
                                   String averageRating,
                                   int ratingsCount,
@@ -372,7 +384,8 @@ public class AboutBookActivity extends AppCompatActivity
                                   List<String> authorsList,
                                   List<String> categoriesList,
                                   pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.about.ImageLinks imageLinks,
-                                  List<pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.about.IndustryIdentifier> industryIdentifierList)
+                                  List<pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.about.IndustryIdentifier> industryIdentifierList,
+                                  boolean isInLibrary)
     {
         Book book = new Book();
         Authors authors;
@@ -405,7 +418,8 @@ public class AboutBookActivity extends AppCompatActivity
         }
 
         book.setPageCount(pageCount);
-        book.setReadedPageCount(0);
+
+        book.setReadedPageCount(pageCount);
 
         if (averageRating != null)
         {
@@ -532,10 +546,10 @@ public class AboutBookActivity extends AppCompatActivity
 
         addBookToLibraryImageButton.setVisibility(View.INVISIBLE);
 
-        getBookInfoFromDatabase(googleBookId);
+        getBookInfoFromDatabase(googleBookId, isInLibrary);
     }
 
-    private void getBookInfoFromDatabase(String id)
+    private void getBookInfoFromDatabase(String id, boolean isInLibrary)
     {
         final Book book = RealmController.with(this).getBook(id);
 
@@ -596,7 +610,8 @@ public class AboutBookActivity extends AppCompatActivity
                 rate,
                 ratingsCount,
                 publisher,
-                publishedDate);
+                publishedDate,
+                isInLibrary);
 
         setBookDescription(description);
 
@@ -616,9 +631,10 @@ public class AboutBookActivity extends AppCompatActivity
                                          String rate,
                                          int ratingsCount,
                                          String publisher,
-                                         String publishedDate)
+                                         String publishedDate,
+                                         boolean isInLibrary)
     {
-        makeToast(readedPageCount + "");
+        makeToast(isInLibrary + "");
 
         if (maturityRating.equals("MATURE"))
         {
@@ -658,46 +674,55 @@ public class AboutBookActivity extends AppCompatActivity
                     .into(thumbnailImageView);
         }
 
-        progressBar.setMax(pageCount);
-        setProgressBarProgress(readedPageCount, pageCount);
-
-        seekBar.setMax(pageCount);
-        seekBar.setProgress(readedPageCount);
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        if (!isInLibrary)
         {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser)
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            progressBar.setVisibility(View.VISIBLE);
+
+            progressBar.setMax(pageCount);
+            setProgressBarProgress(readedPageCount, pageCount);
+
+            seekBar.setMax(pageCount);
+            seekBar.setProgress(readedPageCount);
+
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
             {
-                realm.executeTransaction(new Realm.Transaction()
+                @Override
+                public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser)
                 {
-                    @Override
-                    public void execute (Realm realm)
+                    realm.executeTransaction(new Realm.Transaction()
                     {
-                        Book book = realm.where(Book.class).equalTo("googleBookId", googleBookId).findFirst();
-                        if(book != null)
+                        @Override
+                        public void execute (Realm realm)
                         {
-                            book.setReadedPageCount(progress);
+                            Book book = realm.where(Book.class).equalTo("googleBookId", googleBookId).findFirst();
+                            if(book != null)
+                            {
+                                book.setReadedPageCount(progress);
+                            }
                         }
-                    }
-                });
+                    });
 
-                setProgressBarProgress(progress, pageCount);
-                checkForSeekBarValue(progress, pageCount);
-            }
+                    setProgressBarProgress(progress, pageCount);
+                    checkForSeekBarValue(progress, pageCount);
+                }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar)
-            {
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar)
+                {
 
-            }
+                }
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar)
-            {
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar)
+                {
 
-            }
-        });
+                }
+            });
+        }
 
         if (!publishedDate.equals("NO_DATE"))
         {
@@ -825,8 +850,6 @@ public class AboutBookActivity extends AppCompatActivity
 
     public void moveBookToFinishedShelf(final String googleBookId)
     {
-        progressBar.setProgress(progressBar.getMax());
-
         realm.executeTransaction(new Realm.Transaction()
         {
             @Override
@@ -837,6 +860,7 @@ public class AboutBookActivity extends AppCompatActivity
                 {
                     book.setShelf(3);
                     book.setReadedPageCount(book.getPageCount());
+                    progressBar.setProgress(book.getPageCount());
                 }
             }
         });
@@ -920,7 +944,7 @@ public class AboutBookActivity extends AppCompatActivity
 
         if (isInLibrary)
         {
-            getBookInfoFromDatabase(googleBookId);
+            getBookInfoFromDatabase(googleBookId, isInLibrary);
             addBookToLibraryImageButton.setVisibility(View.INVISIBLE);
         }
         else

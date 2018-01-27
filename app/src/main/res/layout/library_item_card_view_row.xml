@@ -28,6 +28,8 @@
             <me.zhanghai.android.materialprogressbar.MaterialProgressBar
                 android:id="@+id/progress_bar"
                 style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+                android:progressTint="#FFD700"
+                android:progressBackgroundTint="#33000000"
                 android:progressDrawable="@drawable/progress_bar_colors"
                 app:mpb_progressStyle="horizontal"
                 android:layout_width="match_parent"
