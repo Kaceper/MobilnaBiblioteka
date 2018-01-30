@@ -6,13 +6,6 @@
         android:title="@string/search_bottom_navigation_view_icon_name"
         android:icon="@drawable/search_icon"/>
 
-    <!--
-    <item
-        android:id="@+id/discover_icon"
-        android:title="@string/discover_bottom_navigation_view_icon_name"
-        android:icon="@drawable/discover_icon"/>
-     -->
-
     <item
         android:id="@+id/library_icon"
         android:title="@string/library_bottom_navigation_view_icon_name"

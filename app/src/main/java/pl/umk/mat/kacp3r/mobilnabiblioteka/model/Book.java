@@ -12,8 +12,6 @@ public class Book extends RealmObject
 
     private String googleBookId;
 
-    private String isbn;
-
     private String title;
 
     @Nullable
@@ -65,16 +63,6 @@ public class Book extends RealmObject
     public void setGoogleBookId(String googleBookId)
     {
         this.googleBookId = googleBookId;
-    }
-
-    public String getIsbn()
-    {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn)
-    {
-        this.isbn = isbn;
     }
 
     public String getTitle()
