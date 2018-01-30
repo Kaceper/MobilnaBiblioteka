@@ -2,6 +2,7 @@ package pl.umk.mat.kacp3r.mobilnabiblioteka.utils;
 
 import android.app.Dialog;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
@@ -65,5 +66,7 @@ public class AddBookDialogInActivity
             }
         });
         dialog.show();
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 }

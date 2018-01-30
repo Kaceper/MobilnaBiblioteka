@@ -24,6 +24,7 @@ import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.RealmController;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.adapters.RealmBooksAdapter;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.adapters.RealmRecyclerViewAdapter;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.book.AboutBookActivity;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.utils.EditBookDialogInRecyclerView;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.utils.RemoveBookDialog;
 
 public class ToReadRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
@@ -107,6 +108,16 @@ public class ToReadRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
 
                 removeBookFromDatabase(i);
                 libraryActivity.setPageCountTextView();
+            }
+        });
+
+        holder.edit.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                EditBookDialogInRecyclerView editBookDialogInRecyclerView = new EditBookDialogInRecyclerView();
+                editBookDialogInRecyclerView.showDialog(context, libraryActivity, getRealmAdapter(), book, realm,"Edytuj książkę", i);
             }
         });
     }

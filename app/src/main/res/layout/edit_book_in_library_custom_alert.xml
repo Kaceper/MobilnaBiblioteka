@@ -1,0 +1,259 @@
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_gravity="center">
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffffff">
+
+        <LinearLayout
+            android:id="@+id/top_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:background="#E74C3C">
+
+            <ImageView
+                android:id="@+id/add_book_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/edit_book_icon"
+                android:scaleType="fitCenter"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/top_linear_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center_horizontal"
+            android:textColor="#747474"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/linear_layout_edit_texts_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/top_linear_layout" />
+
+        <LinearLayout
+            android:id="@+id/linear_layout_edit_texts_container"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_dialog"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttons_linear_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_dialog">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/title_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tytuł"
+                android:gravity="center"
+                android:inputType="text"
+                android:padding="8dp"
+                android:textColor="@color/selector_false_item_color"
+                android:textColorHighlight="@color/selector_false_item_color"
+                android:textColorLink="@color/selector_false_item_color"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_search_box"/>
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/thumbnail_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Adres źródłowy okładki"
+                android:inputType="text"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/selector_false_item_color"
+                android:textColorHighlight="@color/selector_false_item_color"
+                android:textColorLink="@color/selector_false_item_color"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_search_box"/>
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/description_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Opis"
+                android:inputType="text"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/selector_false_item_color"
+                android:textColorHighlight="@color/selector_false_item_color"
+                android:textColorLink="@color/selector_false_item_color"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_search_box"/>
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/publisher_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Wydawca"
+                android:inputType="text"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/selector_false_item_color"
+                android:textColorHighlight="@color/selector_false_item_color"
+                android:textColorLink="@color/selector_false_item_color"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_search_box"/>
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/published_date_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Data wydania"
+                android:inputType="text"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/selector_false_item_color"
+                android:textColorHighlight="@color/selector_false_item_color"
+                android:textColorLink="@color/selector_false_item_color"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_search_box"/>
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/page_count_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ilość stron"
+                android:inputType="text"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/selector_false_item_color"
+                android:textColorHighlight="@color/selector_false_item_color"
+                android:textColorLink="@color/selector_false_item_color"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_search_box"/>
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/authors_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Autorzy (po przecinku)"
+                android:gravity="center"
+                android:inputType="text"
+                android:padding="8dp"
+                android:textColor="@color/selector_false_item_color"
+                android:textColorHighlight="@color/selector_false_item_color"
+                android:textColorLink="@color/selector_false_item_color"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_search_box"/>
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/categories_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Kategorie (po przecinku)"
+                android:gravity="center"
+                android:inputType="text"
+                android:padding="8dp"
+                android:textColor="@color/selector_false_item_color"
+                android:textColorHighlight="@color/selector_false_item_color"
+                android:textColorLink="@color/selector_false_item_color"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_search_box"/>
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/isbn-10_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="ISBN-10"
+                android:gravity="center"
+                android:inputType="text"
+                android:padding="8dp"
+                android:textColor="@color/selector_false_item_color"
+                android:textColorHighlight="@color/selector_false_item_color"
+                android:textColorLink="@color/selector_false_item_color"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_search_box"/>
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/isbn-13_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="ISBN-13"
+                android:inputType="text"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/selector_false_item_color"
+                android:textColorHighlight="@color/selector_false_item_color"
+                android:textColorLink="@color/selector_false_item_color"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_search_box"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttons_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/linear_layout_edit_texts_container"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/cancel_button"
+                android:padding="5dp"
+                android:fontFamily="sans-serif-thin"
+                android:textSize="14sp"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="16dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:background="#E74C3C"
+                android:text="anuluj"
+                android:textColor="#ffffffff" />
+
+            <Button
+                android:id="@+id/confirm_button"
+                android:layout_width="100dp"
+                android:padding="5dp"
+                android:fontFamily="sans-serif-thin"
+                android:textSize="14sp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="4dp"
+                android:layout_centerHorizontal="true"
+                android:background="#E74C3C"
+                android:text="ok"
+                android:textColor="#ffffffff" />
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.NestedScrollView>
