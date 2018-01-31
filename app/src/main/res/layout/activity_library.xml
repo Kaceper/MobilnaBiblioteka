@@ -93,8 +93,8 @@
     <TextView
         android:id="@+id/page_count_text_view"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="#E74C3C"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary"
         android:fontFamily="sans-serif-thin"
         android:gravity="center"
         android:text="TextView"
