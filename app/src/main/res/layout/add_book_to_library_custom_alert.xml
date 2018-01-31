@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:gravity="center"
-        android:background="#E74C3C">
+        android:background="@color/colorPrimary">
 
         <ImageView
             android:id="@+id/add_book_icon"
@@ -57,15 +57,15 @@
         <Button
             android:id="@+id/to_read_add_button"
             android:padding="5dp"
-            android:fontFamily="sans-serif-thin"
-            android:textSize="14sp"
+            android:fontFamily="sans-serif"
+            android:textSize="12sp"
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="4dp"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
-            android:background="#E74C3C"
+            android:background="@color/colorPrimary"
             android:text="planowana"
             android:textColor="#ffffffff" />
 
@@ -73,14 +73,14 @@
             android:id="@+id/progress_add_button"
             android:layout_width="100dp"
             android:padding="5dp"
-            android:fontFamily="sans-serif-thin"
-            android:textSize="14sp"
+            android:fontFamily="sans-serif"
+            android:textSize="12sp"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:layout_marginRight="4dp"
             android:layout_centerHorizontal="true"
-            android:background="#E74C3C"
+            android:background="@color/colorPrimary"
             android:text="czytana"
             android:textColor="#ffffffff" />
 
@@ -88,12 +88,12 @@
             android:id="@+id/finish_add_button"
             android:layout_width="100dp"
             android:padding="5dp"
-            android:fontFamily="sans-serif-thin"
-            android:textSize="14sp"
+            android:fontFamily="sans-serif"
+            android:textSize="12sp"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:background="#E74C3C"
+            android:background="@color/colorPrimary"
             android:text="przeczytana"
             android:textColor="#ffffffff" />
     </LinearLayout>
