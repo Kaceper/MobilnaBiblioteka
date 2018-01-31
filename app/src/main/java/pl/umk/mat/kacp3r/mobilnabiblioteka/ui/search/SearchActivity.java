@@ -188,6 +188,7 @@ public class SearchActivity extends AppCompatActivity
             {
                 if (response.isSuccessful())
                 {
+                    hintLinearLayout.setVisibility(View.INVISIBLE);
                     bookList = new ArrayList<>();
 
                     if (response.body().getTotalItems() != 0 || response.body().getItems() != null)

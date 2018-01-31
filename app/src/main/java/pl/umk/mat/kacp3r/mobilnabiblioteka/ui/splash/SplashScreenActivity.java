@@ -22,8 +22,8 @@ public class SplashScreenActivity extends AppCompatActivity
             @Override
             public void run()
             {
-                Intent welcomeScreen = new Intent(SplashScreenActivity.this, SearchActivity.class);
-                SplashScreenActivity.this.startActivity(welcomeScreen);
+                Intent searchScreen = new Intent(SplashScreenActivity.this, SearchActivity.class);
+                SplashScreenActivity.this.startActivity(searchScreen);
                 overridePendingTransition(0, 0);
                 SplashScreenActivity.this.finish();
             }

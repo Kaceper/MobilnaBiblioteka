@@ -47,7 +47,7 @@ public class InfoActivity extends AppCompatActivity
 
         LibsSupportFragment fragment = new LibsBuilder()
                 .withAboutIconShown(true)
-                .withVersionShown(true)
+                    .withVersionShown(true)
                 .withLicenseShown(true)
                 .withAboutAppName("Mobilna Biblioteka")
                 .withAboutDescription("Aplikacja stworzona na rzecz pracy inżynierskiej" +
