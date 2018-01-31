@@ -98,7 +98,7 @@ public class AboutBookActivity extends AppCompatActivity
     public void markAsReadImageButtonClick()
     {
         MarkAsReadDialog markAsReadDialog = new MarkAsReadDialog();
-        markAsReadDialog.showDialog(AboutBookActivity.this,"Oznacz książkę jako przeczytaną", googleBookId);
+        markAsReadDialog.showDialog(AboutBookActivity.this,"Czy na pewno chcesz oznaczyć książkę jako przeczytaną?", googleBookId);
     }
 
     @Override

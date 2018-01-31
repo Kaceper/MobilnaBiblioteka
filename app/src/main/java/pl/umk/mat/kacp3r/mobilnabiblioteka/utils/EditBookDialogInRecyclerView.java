@@ -4,6 +4,8 @@ import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -11,26 +13,52 @@ import android.widget.Button;
 import android.widget.TextView;
 import io.realm.Realm;
 import io.realm.RealmBaseAdapter;
+import io.realm.RealmResults;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.R;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Authors;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Book;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Categories;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.library.LibraryActivity;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.library.ToReadRecyclerViewAdapter;
 
 public class EditBookDialogInRecyclerView
 {
-    public void showDialog(final Context context,
+    private TextView dialogText;
+    private AppCompatEditText titleEditText,
+            thumbnailUrlEditText,
+            descriptionEditText,
+            publisherEditText,
+            publishedDateEditText,
+            pageCountEditText,
+            authorsEditText,
+            categoriesEditText,
+            isbn10EditText,
+            isbn13EditText;
+
+    public void showDialog(final String googleBookId,
                            final LibraryActivity libraryActivity,
-                           final RealmBaseAdapter<Book> adapter,
+                           final RecyclerView.Adapter adapter,
                            final Book book,
                            final Realm realm,
-                           String msg,
-                           final int i)
+                           String msg)
     {
         final Dialog dialog = new Dialog(libraryActivity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.edit_book_in_library_custom_alert);
 
-        TextView dialogText = (TextView) dialog.findViewById(R.id.text_dialog);
+        dialogText = (TextView) dialog.findViewById(R.id.text_dialog);
+        titleEditText = (AppCompatEditText)dialog.findViewById(R.id.title_edit_text);
+        thumbnailUrlEditText = (AppCompatEditText)dialog.findViewById(R.id.thumbnail_edit_text);
+        descriptionEditText = (AppCompatEditText)dialog.findViewById(R.id.description_edit_text);
+        publisherEditText = (AppCompatEditText)dialog.findViewById(R.id.publisher_edit_text);
+        publishedDateEditText = (AppCompatEditText)dialog.findViewById(R.id.published_date_edit_text);
+        pageCountEditText = (AppCompatEditText)dialog.findViewById(R.id.page_count_edit_text);
+        authorsEditText = (AppCompatEditText)dialog.findViewById(R.id.authors_edit_text);
+        categoriesEditText = (AppCompatEditText)dialog.findViewById(R.id.categories_edit_text);
+        isbn10EditText = (AppCompatEditText)dialog.findViewById(R.id.isbn_10_edit_text);
+        isbn13EditText = (AppCompatEditText)dialog.findViewById(R.id.isbn_13_edit_text);
+
         dialogText.setText(msg);
 
         fillEditTexts(dialog, book);
@@ -45,12 +73,59 @@ public class EditBookDialogInRecyclerView
             }
         });
 
-        Button markAsReadButton = (Button) dialog.findViewById(R.id.confirm_button);
-        markAsReadButton.setOnClickListener(new View.OnClickListener()
+        Button confirmButton = (Button) dialog.findViewById(R.id.confirm_button);
+        confirmButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
+                RealmResults<Book> results = realm.where(Book.class).equalTo("googleBookId", googleBookId).findAll();
+
+                realm.beginTransaction();
+                results.get(0).setTitle(titleEditText.getText().toString());
+                results.get(0).setSmallThumbnail(thumbnailUrlEditText.getText().toString());
+                results.get(0).setThumbnail(thumbnailUrlEditText.getText().toString());
+                results.get(0).setDescription(descriptionEditText.getText().toString());
+                results.get(0).setPublisher(publisherEditText.getText().toString());
+                results.get(0).setPublishedDate(publishedDateEditText.getText().toString());
+                results.get(0).setPageCount(Integer.parseInt(pageCountEditText.getText().toString()));
+
+                String[] authorsWithoutCommas = (authorsEditText.getText().toString().split("\\s*, \\s*"));
+                Authors authors = new Authors();
+                results.get(0).getAuthors().clear();
+                for (int j = 0; j < authorsWithoutCommas.length; j++)
+                {
+                    authors.setAuthor(authorsWithoutCommas[j]);
+                    results.get(0).getAuthors().add(authors);
+                }
+
+                String[] categoriesWithoutCommas = (categoriesEditText.getText().toString().split("\\s*, \\s*"));
+                Categories categories = new Categories();
+                results.get(0).getCategories().clear();
+                for (int k = 0; k < categoriesWithoutCommas.length; k++)
+                {
+                    categories.setCategory(categoriesWithoutCommas[k]);
+                    results.get(0).getCategories().add(categories);
+                }
+
+                if (results.get(0).getIndustryIdentifiers() != null)
+                {
+                    for (int j = 0; j < results.get(0).getIndustryIdentifiers().size(); j++)
+                    {
+                        if (results.get(0).getIndustryIdentifiers().get(j).getType().equals("ISBN_10"))
+                        {
+                            results.get(0).getIndustryIdentifiers().get(j).setIdentifier(isbn10EditText.getText().toString());
+                        }
+                        else if (results.get(0).getIndustryIdentifiers().get(j).getType().equals("ISBN_13"))
+                        {
+                            results.get(0).getIndustryIdentifiers().get(j).setIdentifier(isbn13EditText.getText().toString());
+                        }
+                    }
+                }
+
+                realm.commitTransaction();
+
+                adapter.notifyDataSetChanged();
                 libraryActivity.makeToast("Książka została zedytowana");
                 dialog.dismiss();
             }
@@ -63,25 +138,18 @@ public class EditBookDialogInRecyclerView
 
     private void fillEditTexts(Dialog dialog, Book book)
     {
-        AppCompatEditText titleEditTex = (AppCompatEditText)dialog.findViewById(R.id.title_edit_text);
-        titleEditTex.setText(book.getTitle());
+        titleEditText.setText(book.getTitle());
 
-        AppCompatEditText thumbnailUrlEditText = (AppCompatEditText)dialog.findViewById(R.id.thumbnail_edit_text);
         thumbnailUrlEditText.setText(book.getThumbnail());
 
-        AppCompatEditText descriptionEditText = (AppCompatEditText)dialog.findViewById(R.id.description_edit_text);
         descriptionEditText.setText(book.getDescription());
 
-        AppCompatEditText publisherEditText = (AppCompatEditText)dialog.findViewById(R.id.publisher_edit_text);
         publisherEditText.setText(book.getPublisher());
 
-        AppCompatEditText publishedDateEditText = (AppCompatEditText)dialog.findViewById(R.id.published_date_edit_text);
         publishedDateEditText.setText(book.getPublishedDate());
 
-        AppCompatEditText pageCountEditText = (AppCompatEditText)dialog.findViewById(R.id.page_count_edit_text);
         pageCountEditText.setText(String.valueOf(book.getPageCount()));
 
-        AppCompatEditText authorsEditText = (AppCompatEditText)dialog.findViewById(R.id.authors_edit_text);
         String prefix = "";
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < book.getAuthors().size(); i++)
@@ -100,7 +168,6 @@ public class EditBookDialogInRecyclerView
         }
         authorsEditText.setText(builder.toString());
 
-        AppCompatEditText categoriesEditText = (AppCompatEditText)dialog.findViewById(R.id.categories_edit_text);
         prefix = "";
         builder = new StringBuilder();
         for (int i = 0; i < book.getCategories().size(); i++)
@@ -118,8 +185,6 @@ public class EditBookDialogInRecyclerView
         }
         categoriesEditText.setText(builder.toString());
 
-        AppCompatEditText isbn10EditText = (AppCompatEditText)dialog.findViewById(R.id.isbn_10_edit_text);
-        AppCompatEditText isbn13EditText = (AppCompatEditText)dialog.findViewById(R.id.isbn_13_edit_text);
         if (book.getIndustryIdentifiers() != null)
         {
             for (int j = 0; j < book.getIndustryIdentifiers().size(); j++)

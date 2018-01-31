@@ -4,10 +4,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import io.realm.Realm;
 import io.realm.RealmResults;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.R;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Book;
@@ -25,23 +27,17 @@ public class RemoveBookDialog
     private FinishedRecyclerViewAdapter finishedRecyclerViewAdapter;
     private RealmResults<Book> books;
 
-    public void showDialog(final Context context,
+    public void showDialog(final String googleBookId,
                            final LibraryActivity libraryActivity,
+                           final RecyclerView.Adapter adapter,
+                           final Book book,
+                           final Realm realm,
                            String msg,
-                           final int shelf,
-                           final String googleBookId,
-                           final int i,
-                           final int itemCount,
-                           final RecyclerView recyclerView)
+                           final int position)
     {
         books = RealmController.with(libraryActivity).booksToRead();
 
-        if (shelf == 1)
-        {
-            toReadRecyclerViewAdapter = new ToReadRecyclerViewAdapter(context, libraryActivity);
-        }
-
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(libraryActivity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.remove_book_from_library_custom_alert);
@@ -65,32 +61,22 @@ public class RemoveBookDialog
             @Override
             public void onClick(View v)
             {
-                if (shelf == 1)
-                {
-                    toReadRecyclerViewAdapter = new ToReadRecyclerViewAdapter(context, libraryActivity);
+                RealmResults<Book> results = realm.where(Book.class).equalTo("googleBookId", googleBookId).findAll();
 
-                    /*
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(libraryActivity);
-                    linearLayoutManager.setReverseLayout(false);
-                    recyclerView.setLayoutManager(linearLayoutManager);
-                    recyclerView.setVerticalScrollBarEnabled(false);
-                    recyclerView.setItemAnimator(new DefaultItemAnimator());
-                    recyclerView.setHasFixedSize(true);
-                    recyclerView.setAdapter(toReadRecyclerViewAdapter);
+                realm.beginTransaction();
+                results.remove(0);
+                realm.commitTransaction();
 
-                    RealmController.with(libraryActivity).refresh();
-                    */
-                    toReadRecyclerViewAdapter.removeBookFromDatabase(i);
+                adapter.notifyItemRemoved(position);
+                adapter.notifyItemRangeChanged(position, adapter.getItemCount());
 
-                    /*
-                    RealmBooksAdapter realmAdapter = new RealmBooksAdapter(libraryActivity, books, true);
-                    toReadRecyclerViewAdapter.setRealmAdapter(realmAdapter);
-                    toReadRecyclerViewAdapter.notifyDataSetChanged();
-                    */
-                }
+                libraryActivity.makeToast("Książka została usunięta z bazy danych ");
+
                 dialog.dismiss();
             }
         });
         dialog.show();
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 }

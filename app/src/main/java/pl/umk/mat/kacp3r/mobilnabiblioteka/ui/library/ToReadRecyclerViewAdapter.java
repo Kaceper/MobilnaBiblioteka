@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import pl.umk.mat.kacp3r.mobilnabiblioteka.R;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Authors;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Book;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.RealmController;
-import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.adapters.RealmBooksAdapter;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.adapters.RealmRecyclerViewAdapter;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.book.AboutBookActivity;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.utils.EditBookDialogInRecyclerView;
@@ -63,16 +61,19 @@ public class ToReadRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
 
         holder.title.setText(book.getTitle());
 
+        String prefix = "";
         StringBuilder builder = new StringBuilder();
         for (Authors authors : authorsList)
         {
             if (authorsList.toArray().length > 1)
             {
-                builder.append(authors.getAuthor() + ", ");
+                builder.append(prefix);
+                prefix = ", ";
+                builder.append(authors.getAuthor());
             }
             else
             {
-                builder.append(authors.getAuthor() + "");
+                builder.append(authors.getAuthor());
             }
         }
         holder.authors.setText(builder.toString());
@@ -103,10 +104,9 @@ public class ToReadRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
             @Override
             public void onClick(View v)
             {
-                //RemoveBookDialog removeBookDialog = new RemoveBookDialog();
-                //removeBookDialog.showDialog(context, libraryActivity, "Usuń książkę z bazy danych", 1, book.getGoogleBookId(), viewHolder.getAdapterPosition(), getItemCount(), recyclerView);
+                RemoveBookDialog removeBookDialog = new RemoveBookDialog();
+                removeBookDialog.showDialog(book.getGoogleBookId(), libraryActivity, ToReadRecyclerViewAdapter.this, book, realm, "Czy na pewno chcesz usunąć książkę?", i);
 
-                removeBookFromDatabase(i);
                 libraryActivity.setPageCountTextView();
             }
         });
@@ -117,26 +117,9 @@ public class ToReadRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
             public void onClick(View v)
             {
                 EditBookDialogInRecyclerView editBookDialogInRecyclerView = new EditBookDialogInRecyclerView();
-                editBookDialogInRecyclerView.showDialog(context, libraryActivity, getRealmAdapter(), book, realm,"Edytuj książkę", i);
+                editBookDialogInRecyclerView.showDialog(book.getGoogleBookId(), libraryActivity, ToReadRecyclerViewAdapter.this, book, realm,"Edycja książki");
             }
         });
-    }
-
-    public void removeBookFromDatabase(int position)
-    {
-        Realm realm = RealmController.getInstance().getRealm();
-
-        RealmResults<Book> results = realm.where(Book.class).equalTo("shelf",
-                    1).findAll();
-
-        realm.beginTransaction();
-        results.remove(position);
-        realm.commitTransaction();
-
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, getRealmAdapter().getCount());
-
-        libraryActivity.makeToast("Książka została usunięta z bazy danych ");
     }
 
     @Override

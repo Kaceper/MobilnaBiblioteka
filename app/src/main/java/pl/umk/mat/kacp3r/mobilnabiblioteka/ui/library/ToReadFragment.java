@@ -75,15 +75,6 @@ public class ToReadFragment extends Fragment
         adapter.notifyDataSetChanged();
     }
 
-    public void updateAdapter(int i, int itemCount)
-    {
-        ToReadRecyclerViewAdapter adapter = new ToReadRecyclerViewAdapter(this.getActivity(), ((LibraryActivity) getActivity()));
-
-        adapter.notifyItemRemoved(i);
-        adapter.notifyItemRangeChanged(i, itemCount);
-        //adapter.notifyDataSetChanged();
-    }
-
     @Override
     public void onAttach(Context context)
     {
