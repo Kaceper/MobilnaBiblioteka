@@ -82,13 +82,13 @@
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
-                android:src="@drawable/red_star_icon"/>
+                android:src="@drawable/star_icon"/>
 
             <TextView
                 android:id="@+id/rate_text_view"
                 android:background="#F4F4F4"
                 android:textSize="16sp"
-                android:textColor="#E74C3C"
+                android:textColor="@color/colorPrimary"
                 android:fontFamily="sans-serif-thin"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
@@ -125,7 +125,7 @@
             android:layout_height="40dp"
             android:layout_marginRight="4dp"
             android:layout_alignParentRight="true"
-            android:background="#E74C3C"
+            android:background="@color/colorPrimary"
             android:text="DODAJ"
             android:gravity="center"/>
 

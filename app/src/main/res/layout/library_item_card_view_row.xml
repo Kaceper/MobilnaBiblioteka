@@ -84,7 +84,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="20dp"
             android:layout_marginRight="4dp"
-            android:background="#E74C3C"
+            android:background="@color/colorPrimary"
             android:fontFamily="sans-serif-thin"
             android:gravity="center"
             android:text="EDYTUJ"

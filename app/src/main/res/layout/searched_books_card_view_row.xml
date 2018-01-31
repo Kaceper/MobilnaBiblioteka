@@ -82,13 +82,13 @@
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
-                android:src="@drawable/red_star_icon"/>
+                android:src="@drawable/star_icon"/>
 
             <TextView
                 android:id="@+id/rate_text_view"
                 android:background="#F4F4F4"
                 android:textSize="16sp"
-                android:textColor="#E74C3C"
+                android:textColor="@color/colorPrimary"
                 android:fontFamily="sans-serif-thin"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
