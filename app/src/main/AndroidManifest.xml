@@ -47,6 +47,13 @@
         </activity>
 
         <activity
+            android:name=".ui.info.InfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/noAnimTheme"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <activity
             android:name=".ui.book.AboutBookActivity"
             android:screenOrientation="portrait"
             android:theme="@style/noAnimTheme"

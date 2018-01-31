@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.R;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.info.InfoActivity;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.library.LibraryActivity;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.search.SearchActivity;
 
@@ -50,13 +51,13 @@ public class BottomNavigationViewHelper
                         */
 
                     case R.id.library_icon:
-                        Intent library = new Intent(context, LibraryActivity.class); //ACTIVITY_NUM = 2
+                        Intent library = new Intent(context, LibraryActivity.class); //ACTIVITY_NUM = 1
                         library.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(library);
                         break;
 
                     case R.id.info_icon:
-                        Intent info = new Intent(context, SearchActivity.class); //ACTIVITY_NUM = 3
+                        Intent info = new Intent(context, InfoActivity.class); //ACTIVITY_NUM = 2
                         info.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(info);
                         break;

@@ -6,4 +6,5 @@
     <string name="discover_bottom_navigation_view_icon_name">Odkryj</string>
     <string name="library_bottom_navigation_view_icon_name">Biblioteka</string>
     <string name="info_bottom_navigation_view_icon_name">Informacje</string>
+    <string name="icons_link"><![CDATA[<a href="https://icons8.com/icon/new-icons/all">icons8]]> %1$s.</string>
 </resources>
