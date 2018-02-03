@@ -84,6 +84,7 @@ public class AboutBookActivity extends AppCompatActivity
     @BindView(R.id.publish_info_text_view) TextView publishInfoTextView;
     @BindView(R.id.description_webview) WebView descriptionWebView;
     @BindView(R.id.recycler_view_author_books) RecyclerView recyclerViewAuthorBooks;
+    @BindView(R.id.categories_text_view) TextView categoriesTextView;
     @BindView(R.id.publisher_text_view) TextView publisherTextView;
     @BindView(R.id.isbn_text_view) TextView isbnTextView;
     @BindView(R.id.page_count_text_view) TextView pageCountTextView;
@@ -427,7 +428,8 @@ public class AboutBookActivity extends AppCompatActivity
 
                                 getAuthorOtherBooksWithetrofit(authors.get(0), title);
 
-                                setBibliographyInfo(publisher,
+                                setBibliographyInfo(categories,
+                                        publisher,
                                         isbnList,
                                         pageCount);
 
@@ -637,6 +639,7 @@ public class AboutBookActivity extends AppCompatActivity
         String publisher;
         String publishedDate;
         String description;
+        List<String> categoriesList;
         List<String> isbnList;
         int readedPageCount;
         int pageCount;
@@ -656,6 +659,12 @@ public class AboutBookActivity extends AppCompatActivity
         rate = book.getAverageRating().toString();
 
         ratingsCount = book.getRatingsCount();
+
+        categoriesList = new ArrayList<>();
+        for (int i = 0; i < book.getCategories().size(); i++)
+        {
+            categoriesList.add(i, book.getCategories().get(i).getCategory());
+        }
 
         publisher = book.getPublisher();
 
@@ -690,7 +699,8 @@ public class AboutBookActivity extends AppCompatActivity
 
         getAuthorOtherBooksWithetrofit(authors.get(0), title);
 
-        setBibliographyInfo(publisher,
+        setBibliographyInfo(categoriesList,
+                publisher,
                 isbnList,
                 pageCount);
     }
@@ -797,15 +807,32 @@ public class AboutBookActivity extends AppCompatActivity
         descriptionWebView.loadData(myData, "text/html", "UTF-8");
     }
 
-    private void setBibliographyInfo(String publisher,
+    private void setBibliographyInfo(List<String> categories,
+                                     String publisher,
                                      List<String> isbnList,
                                      int pageCount)
     {
+        StringBuilder builder = new StringBuilder();
+        String prefix = "";
+        for (String category : categories)
+        {
+            if (categories.toArray().length > 1)
+            {
+                builder.append(prefix);
+                prefix = ", ";
+                builder.append(category);
+            }
+            else
+            {
+                builder.append(category + "");
+            }
+        }
+        categoriesTextView.setText(builder.toString());
+
         publisherTextView.setText(publisher);
 
-        String prefix = "";
-
-        StringBuilder builder = new StringBuilder();
+        prefix = "";
+        builder = new StringBuilder();
         for (String isbn : isbnList)
         {
             if (isbnList.toArray().length > 1)
@@ -1015,7 +1042,10 @@ public class AboutBookActivity extends AppCompatActivity
             constraintSet.connect(R.id.description_title_text_view, ConstraintSet.TOP, R.id.thumbnail, ConstraintSet.BOTTOM, 32);
             constraintSet.applyTo(constraintLayout);
 
+            leftImageButton.setVisibility(View.INVISIBLE);
+            seekBarValueTextView.setVisibility(View.INVISIBLE);
             seekBar.setVisibility(View.INVISIBLE);
+            rightImageButton.setVisibility(View.INVISIBLE);
             markAsReadImageButton.setVisibility(View.INVISIBLE);
         }
     }
@@ -1048,7 +1078,6 @@ public class AboutBookActivity extends AppCompatActivity
             bookGoogleIdRequestWithRetrofit(googleBookId, false, 0);
             addBookToLibraryImageButton.setVisibility(View.VISIBLE);
         }
-
         handleDescriptionMargin();
     }
 }
