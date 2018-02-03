@@ -149,7 +149,7 @@ public class SearchActivity extends AppCompatActivity
             }
             else
             {
-                Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
+                // Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
                 searchRequestByISBNWithRetrofit(result.getContents());
                 // searchRequestWithRetrofit(result.getContents(), 0);
             }
