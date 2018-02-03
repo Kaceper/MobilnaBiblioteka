@@ -91,14 +91,17 @@ public class AboutBookActivity extends AppCompatActivity
     public void setAddBookToLibraryImageButtonClick()
     {
         AddBookDialogInActivity addBookDialogInActivity = new AddBookDialogInActivity();
-        addBookDialogInActivity.showDialog(AboutBookActivity.this, "Dodaj książkę do biblioteki", googleBookId, false);
+        addBookDialogInActivity.showDialog(AboutBookActivity.this, "Dodaj książkę do biblioteki", googleBookId);
     }
 
     @OnClick(R.id.mark_as_read_image_button)
     public void markAsReadImageButtonClick()
     {
-        MarkAsReadDialog markAsReadDialog = new MarkAsReadDialog();
-        markAsReadDialog.showDialog(AboutBookActivity.this,"Czy na pewno chcesz oznaczyć książkę jako przeczytaną?", googleBookId);
+        // AddBookDialogInActivity addBookDialogInActivity = new AddBookDialogInActivity();
+        // addBookDialogInActivity.showDialog(AboutBookActivity.this, "Dodaj książkę do biblioteki", googleBookId);
+
+         MarkAsReadDialog markAsReadDialog = new MarkAsReadDialog();
+         markAsReadDialog.showDialog(AboutBookActivity.this,"Oznaczyć książkę jako przeczytaną?", googleBookId);
     }
 
     @Override

@@ -11,12 +11,9 @@ import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.book.AboutBookActivity;
 
 public class AddBookDialogInActivity
 {
-    private AboutBookActivity aboutBookActivity;
-
     public void showDialog(final AboutBookActivity aboutBookActivity,
                            String msg,
-                           final String googleBookId,
-                           Boolean isInLibrary)
+                           final String googleBookId)
     {
 
         final Dialog dialog = new Dialog(aboutBookActivity);
@@ -35,7 +32,6 @@ public class AddBookDialogInActivity
             {
                 aboutBookActivity.bookGoogleIdRequestWithRetrofit(googleBookId, true, 1);
 
-                aboutBookActivity.makeToast("Książka została dodana na półkę");
                 dialog.dismiss();
             }
         });
@@ -48,7 +44,6 @@ public class AddBookDialogInActivity
             {
                 aboutBookActivity.bookGoogleIdRequestWithRetrofit(googleBookId, true, 2);
 
-                aboutBookActivity.makeToast("Książka została dodana na półkę");
                 dialog.dismiss();
             }
         });
@@ -61,7 +56,6 @@ public class AddBookDialogInActivity
             {
                 aboutBookActivity.bookGoogleIdRequestWithRetrofit(googleBookId, true, 3);
 
-                aboutBookActivity.makeToast("Książka została dodana na półkę");
                 dialog.dismiss();
             }
         });

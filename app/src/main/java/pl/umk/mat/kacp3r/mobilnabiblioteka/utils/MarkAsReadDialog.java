@@ -42,8 +42,6 @@ public class MarkAsReadDialog
             public void onClick(View v)
             {
                 aboutBookActivity.moveBookToFinishedShelf(googleBookId);
-
-                aboutBookActivity.makeToast("Książka została oznaczona jako przeczytana");
                 dialog.dismiss();
             }
         });

@@ -12,12 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:gravity="center"
-        android:background="@color/colorPrimary"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp">
+        android:background="@color/colorPrimary">
 
         <ImageView
-            android:id="@+id/mark_as_read_image_view"
+            android:id="@+id/clean_list_icon"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@drawable/mark_as_read_book_icon"
@@ -28,15 +26,16 @@
         android:id="@+id/text_dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#747474"
-        android:fontFamily="sans-serif"
         android:layout_below="@+id/top_linear_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif"
+        android:maxLines="2"
         android:gravity="center_horizontal"
+        android:textColor="#747474"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/buttons_linear_layout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +60,7 @@
             android:padding="5dp"
             android:fontFamily="sans-serif"
             android:textSize="12sp"
-            android:layout_width="110dp"
+            android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="16dp"
@@ -73,7 +72,7 @@
 
         <Button
             android:id="@+id/mark_as_read_button"
-            android:layout_width="110dp"
+            android:layout_width="100dp"
             android:padding="5dp"
             android:fontFamily="sans-serif"
             android:textSize="12sp"
@@ -85,5 +84,6 @@
             android:background="@color/colorPrimary"
             android:text="OK"
             android:textColor="#ffffffff" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
