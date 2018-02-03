@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.R;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Book;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.RealmController;
@@ -34,18 +35,22 @@ public class ProgressFragment extends Fragment
 
     private Realm realm;
     private ProgressRecyclerViewAdapter adapter;
+    private boolean sortAsc = true;
 
     @OnClick(R.id.sort_image_button)
     public void onImageButtonClick()
     {
         if (sortImageButton.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.sort_icon_asc).getConstantState()))
         {
-            sortImageButton.setImageResource(R.drawable.sort_icon_desc);
+            sortAsc = true;
+            setRealmAdapter(RealmController.with(this.getActivity()).progressBooks(), sortAsc);
         }
         else
         {
-            sortImageButton.setImageResource(R.drawable.sort_icon_asc);
+            sortAsc = false;
+            setRealmAdapter(RealmController.with(this.getActivity()).progressBooks(), sortAsc);
         }
+        setSortIcon();
     }
 
     @Override
@@ -61,6 +66,7 @@ public class ProgressFragment extends Fragment
 
         handleProgressFragmentRecyclerView();
         setNumberOfElementsTextView();
+        setSortIcon();
 
         return v;
     }
@@ -86,7 +92,7 @@ public class ProgressFragment extends Fragment
             recyclerView.setAdapter(adapter);
 
             RealmController.with(this.getActivity()).refresh();
-            setRealmAdapter(RealmController.with(this.getActivity()).progressBooks());
+            setRealmAdapter(RealmController.with(this.getActivity()).progressBooks(), sortAsc);
         }
         else
         {
@@ -95,8 +101,29 @@ public class ProgressFragment extends Fragment
         }
     }
 
-    public void setRealmAdapter(RealmResults<Book> books)
+    private void setSortIcon()
     {
+        if (sortAsc)
+        {
+            sortImageButton.setImageResource(R.drawable.sort_icon_desc);
+        }
+        else
+        {
+            sortImageButton.setImageResource(R.drawable.sort_icon_asc);
+        }
+    }
+
+    public void setRealmAdapter(RealmResults<Book> books, boolean sortAsc)
+    {
+        if (sortAsc)
+        {
+            books.sort("title", Sort.ASCENDING);
+        }
+        else
+        {
+            books.sort("title", Sort.DESCENDING);
+        }
+
         RealmBooksAdapter realmAdapter = new RealmBooksAdapter(this.getActivity(), books, true);
         adapter.setRealmAdapter(realmAdapter);
         adapter.notifyDataSetChanged();
