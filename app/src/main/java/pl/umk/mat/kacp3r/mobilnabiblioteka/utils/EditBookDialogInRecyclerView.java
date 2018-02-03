@@ -1,6 +1,7 @@
 package pl.umk.mat.kacp3r.mobilnabiblioteka.utils;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.AppCompatEditText;
@@ -36,13 +37,13 @@ public class EditBookDialogInRecyclerView
             isbn13EditText;
 
     public void showDialog(final String googleBookId,
-                           final LibraryActivity libraryActivity,
+                           final Activity activity,
                            final RecyclerView.Adapter adapter,
                            final Book book,
                            final Realm realm,
                            String msg)
     {
-        final Dialog dialog = new Dialog(libraryActivity);
+        final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.edit_book_in_library_custom_alert);
@@ -88,7 +89,40 @@ public class EditBookDialogInRecyclerView
                 results.get(0).setDescription(descriptionEditText.getText().toString());
                 results.get(0).setPublisher(publisherEditText.getText().toString());
                 results.get(0).setPublishedDate(publishedDateEditText.getText().toString());
-                results.get(0).setPageCount(Integer.parseInt(pageCountEditText.getText().toString()));
+
+                if (results.get(0).getPageCount() <= Integer.parseInt(pageCountEditText.getText().toString()))
+                {
+                    if (results.get(0).getShelf() == 3)
+                    {
+                        results.get(0).setPageCount(Integer.parseInt(pageCountEditText.getText().toString()));
+                        results.get(0).setReadedPageCount(Integer.parseInt(pageCountEditText.getText().toString()));
+                    }
+                    else if (results.get(0).getShelf() == 2)
+                    {
+                        results.get(0).setPageCount(Integer.parseInt(pageCountEditText.getText().toString()));
+                    }
+                    else
+                    {
+                        results.get(0).setPageCount(Integer.parseInt(pageCountEditText.getText().toString()));
+                    }
+                }
+                else
+                {
+                    if (results.get(0).getShelf() == 3)
+                    {
+                        results.get(0).setPageCount(Integer.parseInt(pageCountEditText.getText().toString()));
+                        results.get(0).setReadedPageCount(Integer.parseInt(pageCountEditText.getText().toString()));
+                    }
+                    else if (results.get(0).getShelf() == 2)
+                    {
+                        results.get(0).setPageCount(Integer.parseInt(pageCountEditText.getText().toString()));
+                        results.get(0).setReadedPageCount(Integer.parseInt(pageCountEditText.getText().toString()) - 1);
+                    }
+                    else
+                    {
+                        results.get(0).setPageCount(Integer.parseInt(pageCountEditText.getText().toString()));
+                    }
+                }
 
                 String[] authorsWithoutCommas = (authorsEditText.getText().toString().split("\\s*, \\s*"));
                 Authors authors = new Authors();
@@ -126,7 +160,7 @@ public class EditBookDialogInRecyclerView
                 realm.commitTransaction();
 
                 adapter.notifyDataSetChanged();
-                libraryActivity.makeToast("Książka została zedytowana");
+                handleActivity(activity);
                 dialog.dismiss();
             }
         });
@@ -198,6 +232,14 @@ public class EditBookDialogInRecyclerView
                     isbn13EditText.setText(book.getIndustryIdentifiers().get(j).getIdentifier());
                 }
             }
+        }
+    }
+
+    private void handleActivity(Activity activity)
+    {
+        if (activity instanceof  LibraryActivity)
+        {
+            ((LibraryActivity) activity).setPageCountTextView();
         }
     }
 }

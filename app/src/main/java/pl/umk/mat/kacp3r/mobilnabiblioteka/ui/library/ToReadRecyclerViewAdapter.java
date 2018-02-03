@@ -30,13 +30,13 @@ public class ToReadRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
     final Context context;
     private Realm realm;
     private LibraryActivity libraryActivity;
-    ToReadFragment toReadFragment;
+    private ToReadFragment toReadFragment;
 
-    public ToReadRecyclerViewAdapter(Context context, LibraryActivity libraryActivity)
+    public ToReadRecyclerViewAdapter(Context context, LibraryActivity libraryActivity, ToReadFragment toReadFragment)
     {
         this.context = context;
         this.libraryActivity = libraryActivity;
-        toReadFragment = new ToReadFragment();
+        this.toReadFragment = toReadFragment;
     }
 
     @Override
@@ -105,9 +105,7 @@ public class ToReadRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
             public void onClick(View v)
             {
                 RemoveBookDialog removeBookDialog = new RemoveBookDialog();
-                removeBookDialog.showDialog(book.getGoogleBookId(), libraryActivity, ToReadRecyclerViewAdapter.this, book, realm, "Czy na pewno chcesz usunąć książkę?", i);
-
-                libraryActivity.setPageCountTextView();
+                removeBookDialog.showDialog(book.getGoogleBookId(), libraryActivity, toReadFragment, ToReadRecyclerViewAdapter.this, realm, "Czy na pewno chcesz usunąć książkę?", i);
             }
         });
 

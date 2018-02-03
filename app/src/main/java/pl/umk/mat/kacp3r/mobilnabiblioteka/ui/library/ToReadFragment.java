@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,7 +46,7 @@ public class ToReadFragment extends Fragment
 
         this.realm = RealmController.with(this.getActivity()).getRealm();
 
-        adapter = new ToReadRecyclerViewAdapter(this.getActivity(), ((LibraryActivity)getActivity()));
+        adapter = new ToReadRecyclerViewAdapter(this.getActivity(), ((LibraryActivity)getActivity()), ToReadFragment.this);
 
         handleToReadFragmentRecyclerView();
         setNumberOfElementsTextView();
@@ -52,7 +54,7 @@ public class ToReadFragment extends Fragment
         return v;
     }
 
-    private void setNumberOfElementsTextView()
+    public void setNumberOfElementsTextView()
     {
         numberOfElementsTextView.setText("Liczba elementów (" + adapter.getItemCount() + ")");
     }

@@ -48,7 +48,7 @@ public class FinishedFragment extends Fragment
 
         this.realm = RealmController.with(this.getActivity()).getRealm();
 
-        adapter = new FinishedRecyclerViewAdapter(this.getActivity(), (LibraryActivity)getActivity());
+        adapter = new FinishedRecyclerViewAdapter(this.getActivity(), (LibraryActivity)getActivity(), FinishedFragment.this);
 
         handleFinishedFragmentRecyclerView();
         setNumberOfElementsTextView();
@@ -56,7 +56,7 @@ public class FinishedFragment extends Fragment
         return v;
     }
 
-    private void setNumberOfElementsTextView()
+    public void setNumberOfElementsTextView()
     {
         numberOfElementsTextView.setText("Liczba elementów (" + adapter.getItemCount() + ")");
     }
@@ -65,6 +65,7 @@ public class FinishedFragment extends Fragment
     {
         if (RealmController.with(this.getActivity()).finishedBooks().size() > 0)
         {
+            linearLayout.setVisibility(View.VISIBLE);
             emptyFinishedBooksListTextView.setVisibility(View.INVISIBLE);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
@@ -81,6 +82,7 @@ public class FinishedFragment extends Fragment
         }
         else
         {
+            linearLayout.setVisibility(View.INVISIBLE);
             emptyFinishedBooksListTextView.setVisibility(View.VISIBLE);
         }
     }

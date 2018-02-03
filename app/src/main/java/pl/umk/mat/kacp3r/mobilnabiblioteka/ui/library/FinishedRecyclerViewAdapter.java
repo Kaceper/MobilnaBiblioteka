@@ -34,11 +34,13 @@ public class FinishedRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
     final Context context;
     private Realm realm;
     private LibraryActivity libraryActivity;
+    private FinishedFragment finishedFragment;
 
-    public FinishedRecyclerViewAdapter(Context context, LibraryActivity libraryActivity)
+    public FinishedRecyclerViewAdapter(Context context, LibraryActivity libraryActivity, FinishedFragment finishedFragment)
     {
         this.context = context;
         this.libraryActivity = libraryActivity;
+        this.finishedFragment = finishedFragment;
     }
 
     @Override
@@ -110,9 +112,7 @@ public class FinishedRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
             public void onClick(View v)
             {
                 RemoveBookDialog removeBookDialog = new RemoveBookDialog();
-                removeBookDialog.showDialog(book.getGoogleBookId(), libraryActivity, FinishedRecyclerViewAdapter.this, book, realm, "Czy na pewno chcesz usunąć książkę?", i);
-
-                libraryActivity.setPageCountTextView();
+                removeBookDialog.showDialog(book.getGoogleBookId(), libraryActivity, finishedFragment,FinishedRecyclerViewAdapter.this, realm, "Czy na pewno chcesz usunąć książkę?", i);
             }
         });
 

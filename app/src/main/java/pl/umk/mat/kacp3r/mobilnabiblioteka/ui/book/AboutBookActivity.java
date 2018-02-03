@@ -760,8 +760,6 @@ public class AboutBookActivity extends AppCompatActivity
                                                      final int pageCount,
                                                      int readedPageCount)
     {
-        makeToast(readedPageCount + "   " + pageCount);
-
         if (!isInLibrary)
         {
             progressBar.setVisibility(View.INVISIBLE);

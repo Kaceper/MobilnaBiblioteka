@@ -322,6 +322,6 @@ public class SearchActivity extends AppCompatActivity
         setUpBottomNavigationViewEx();
 
         //RealmController.with(this).clearAll();
-        Toast.makeText(this, "ilość książek w bazie = " + RealmController.getInstance().getBooks().size(), Toast.LENGTH_LONG).show();
+        // Toast.makeText(this, "ilość książek w bazie = " + RealmController.getInstance().getBooks().size(), Toast.LENGTH_LONG).show();
     }
 }

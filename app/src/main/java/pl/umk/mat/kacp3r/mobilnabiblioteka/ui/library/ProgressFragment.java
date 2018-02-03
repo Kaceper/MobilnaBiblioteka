@@ -43,7 +43,7 @@ public class ProgressFragment extends Fragment
 
         this.realm = RealmController.with(this.getActivity()).getRealm();
 
-        adapter = new ProgressRecyclerViewAdapter(this.getActivity(), (LibraryActivity)getActivity());
+        adapter = new ProgressRecyclerViewAdapter(this.getActivity(), (LibraryActivity)getActivity(),ProgressFragment.this);
 
         handleProgressFragmentRecyclerView();
         setNumberOfElementsTextView();
@@ -51,7 +51,7 @@ public class ProgressFragment extends Fragment
         return v;
     }
 
-    private void setNumberOfElementsTextView()
+    public void setNumberOfElementsTextView()
     {
         numberOfElementsTextView.setText("Liczba elementów (" + adapter.getItemCount() + ")");
     }
@@ -60,6 +60,7 @@ public class ProgressFragment extends Fragment
     {
         if (RealmController.with(this.getActivity()).progressBooks().size() > 0)
         {
+            linearLayout.setVisibility(View.VISIBLE);
             emptyProgressBooksListTextView.setVisibility(View.INVISIBLE);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
@@ -75,6 +76,7 @@ public class ProgressFragment extends Fragment
         }
         else
         {
+            linearLayout.setVisibility(View.INVISIBLE);
             emptyProgressBooksListTextView.setVisibility(View.VISIBLE);
         }
     }

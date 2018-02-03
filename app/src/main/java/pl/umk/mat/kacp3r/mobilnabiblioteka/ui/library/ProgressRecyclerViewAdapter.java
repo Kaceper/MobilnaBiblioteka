@@ -39,13 +39,14 @@ public class ProgressRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
 {
     final Context context;
     private Realm realm;
-    private LayoutInflater layoutInflater;
     private LibraryActivity libraryActivity;
+    private ProgressFragment progressFragment;
 
-    public ProgressRecyclerViewAdapter(Context context, LibraryActivity libraryActivity)
+    public ProgressRecyclerViewAdapter(Context context, LibraryActivity libraryActivity, ProgressFragment progressFragment)
     {
         this.context = context;
         this.libraryActivity = libraryActivity;
+        this.progressFragment = progressFragment;
     }
 
     @Override
@@ -117,9 +118,7 @@ public class ProgressRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book>
             public void onClick(View v)
             {
                 RemoveBookDialog removeBookDialog = new RemoveBookDialog();
-                removeBookDialog.showDialog(book.getGoogleBookId(), libraryActivity, ProgressRecyclerViewAdapter.this, book, realm, "Czy na pewno chcesz usunąć książkę?", i);
-
-                libraryActivity.setPageCountTextView();
+                removeBookDialog.showDialog(book.getGoogleBookId(), libraryActivity, progressFragment, ProgressRecyclerViewAdapter.this, realm, "Czy na pewno chcesz usunąć książkę?", i);
             }
         });
 
