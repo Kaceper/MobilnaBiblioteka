@@ -75,6 +75,8 @@ public class AboutBookActivity extends AppCompatActivity
     @BindView(R.id.back_top_image_button) ImageButton backTopImageButton;
     @BindView(R.id.add_book_to_library_image_button) ImageButton addBookToLibraryImageButton;
     @BindView(R.id.title_text_view) TextView titleTextView;
+    @BindView(R.id.author_icon) ImageView authorImageView;
+    @BindView(R.id.author_books_title_text_view) TextView authorBooksTitleTextView;
     @BindView(R.id.thumbnail) ImageView thumbnailImageView;
     @BindView(R.id.progress_bar) MaterialProgressBar progressBar;
     @BindView(R.id.mark_as_read_image_button) ImageButton markAsReadImageButton;
@@ -207,16 +209,39 @@ public class AboutBookActivity extends AppCompatActivity
                     {
                         if (response.body().getItems() != null)
                         {
-                            bookList = response.body().getItems();
+                            authorImageView.setVisibility(View.VISIBLE);
+                            authorBooksTitleTextView.setVisibility(View.VISIBLE);
+                            recyclerViewAuthorBooks.setVisibility(View.VISIBLE);
 
-                            authorsBooksRecyclerViewAdapter = new AuthorsBooksRecyclerViewAdapter(getApplicationContext(), AboutBookActivity.this,  bookList);
-                            LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-                            layoutManager.setReverseLayout(false);
-                            recyclerViewAuthorBooks.setLayoutManager(layoutManager);
-                            recyclerViewAuthorBooks.setItemAnimator(new DefaultItemAnimator());
-                            recyclerViewAuthorBooks.setHorizontalScrollBarEnabled(false);
-                            recyclerViewAuthorBooks.setHasFixedSize(true);
-                            recyclerViewAuthorBooks.setAdapter(authorsBooksRecyclerViewAdapter);
+                            ConstraintSet constraintSet = new ConstraintSet();
+                            constraintSet.clone(constraintLayout);
+                            constraintSet.connect(R.id.bibliography_info_text_view, ConstraintSet.TOP, R.id.recycler_view_author_books, ConstraintSet.BOTTOM, 16);
+                            constraintSet.applyTo(constraintLayout);
+
+                            if (response.body().getItems().size() > 0)
+                            {
+                                bookList = response.body().getItems();
+
+                                authorsBooksRecyclerViewAdapter = new AuthorsBooksRecyclerViewAdapter(getApplicationContext(), AboutBookActivity.this,  bookList);
+                                LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+                                layoutManager.setReverseLayout(false);
+                                recyclerViewAuthorBooks.setLayoutManager(layoutManager);
+                                recyclerViewAuthorBooks.setItemAnimator(new DefaultItemAnimator());
+                                recyclerViewAuthorBooks.setHorizontalScrollBarEnabled(false);
+                                recyclerViewAuthorBooks.setHasFixedSize(true);
+                                recyclerViewAuthorBooks.setAdapter(authorsBooksRecyclerViewAdapter);
+                            }
+                        }
+                        else
+                        {
+                            authorImageView.setVisibility(View.INVISIBLE);
+                            authorBooksTitleTextView.setVisibility(View.INVISIBLE);
+                            recyclerViewAuthorBooks.setVisibility(View.INVISIBLE);
+
+                            ConstraintSet constraintSet = new ConstraintSet();
+                            constraintSet.clone(constraintLayout);
+                            constraintSet.connect(R.id.bibliography_info_text_view, ConstraintSet.TOP, R.id.description_webview, ConstraintSet.BOTTOM, 16);
+                            constraintSet.applyTo(constraintLayout);
                         }
                     }
                 }
