@@ -46,7 +46,16 @@
             android:textColor="@color/selector_false_item_color"
             android:textColorHighlight="@color/selector_false_item_color"
             android:textColorLink="@color/selector_false_item_color"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
+
+        <ImageButton
+            android:id="@+id/clean_list_image_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginRight="16dp"
+            android:background="@null"
+            android:src="@drawable/broom_icon"/>
 
         <ImageButton
             android:id="@+id/sort_image_button"
@@ -55,7 +64,7 @@
             android:layout_gravity="center_vertical|end"
             android:layout_marginRight="8dp"
             android:background="@null"
-            android:src="@drawable/sort_icon_asc" />
+            android:src="@drawable/sort_icon_asc"/>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

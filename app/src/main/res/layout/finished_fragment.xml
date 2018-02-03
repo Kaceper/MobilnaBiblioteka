@@ -51,6 +51,15 @@
             android:textSize="14sp" />
 
         <ImageButton
+            android:id="@+id/clean_list_image_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginRight="16dp"
+            android:background="@null"
+            android:src="@drawable/broom_icon"/>
+
+        <ImageButton
             android:id="@+id/sort_image_button"
             android:layout_width="20dp"
             android:layout_height="20dp"
