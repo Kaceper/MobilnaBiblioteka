@@ -67,8 +67,10 @@ public class AboutBookActivity extends AppCompatActivity
     private Realm realm;
 
     @BindView(R.id.constraint_layout) ConstraintLayout constraintLayout;
+    @BindView(R.id.left_image_button) ImageButton leftImageButton;
     @BindView(R.id.seek_bar_value) TextView seekBarValueTextView;
     @BindView(R.id.seek_bar) DiscreteSeekBar seekBar;
+    @BindView(R.id.right_image_button) ImageButton rightImageButton;
     @BindView(R.id.maturity_rating_image_view) ImageView maturityRatingImageView;
     @BindView(R.id.back_top_image_button) ImageButton backTopImageButton;
     @BindView(R.id.add_book_to_library_image_button) ImageButton addBookToLibraryImageButton;
@@ -107,6 +109,42 @@ public class AboutBookActivity extends AppCompatActivity
 
          MarkAsReadDialog markAsReadDialog = new MarkAsReadDialog();
          markAsReadDialog.showDialog(AboutBookActivity.this,"Oznaczyć książkę jako przeczytaną?", googleBookId);
+    }
+
+    @OnClick(R.id.left_image_button)
+    public void onLeftImageButtonClick()
+    {
+        final int[] readedPageCount = new int[1];
+        final int[] pageCount = new int[1];
+
+        realm.executeTransaction(new Realm.Transaction()
+        {
+            @Override
+            public void execute (Realm realm)
+            {
+                Book book = realm.where(Book.class).equalTo("googleBookId", googleBookId).findFirst();
+                if(book != null)
+                {
+                    if (book.getReadedPageCount() < 1)
+                    {
+                        book.setReadedPageCount(0);
+                        readedPageCount[0] = 0;
+                        pageCount[0] = book.getPageCount();
+                    }
+                    else
+                    {
+                        book.setReadedPageCount(book.getReadedPageCount() - 1);
+                        readedPageCount[0] = book.getReadedPageCount();
+                        pageCount[0] = book.getPageCount();
+                    }
+                }
+            }
+        });
+        setSeekBarValueTextView(readedPageCount[0], pageCount[0]);
+        setProgressBarProgress(readedPageCount[0], pageCount[0]);
+        seekBar.setProgress(readedPageCount[0]);
+        checkForSeekBarValue(readedPageCount[0], pageCount[0]);
+
     }
 
     @Override
