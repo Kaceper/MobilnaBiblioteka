@@ -2,6 +2,7 @@ package pl.umk.mat.kacp3r.mobilnabiblioteka.ui.book;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
@@ -15,11 +16,14 @@ import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,13 +67,14 @@ public class AboutBookActivity extends AppCompatActivity
     private Realm realm;
 
     @BindView(R.id.constraint_layout) ConstraintLayout constraintLayout;
+    @BindView(R.id.seek_bar_value) TextView seekBarValueTextView;
+    @BindView(R.id.seek_bar) DiscreteSeekBar seekBar;
     @BindView(R.id.maturity_rating_image_view) ImageView maturityRatingImageView;
     @BindView(R.id.back_top_image_button) ImageButton backTopImageButton;
     @BindView(R.id.add_book_to_library_image_button) ImageButton addBookToLibraryImageButton;
     @BindView(R.id.title_text_view) TextView titleTextView;
     @BindView(R.id.thumbnail) ImageView thumbnailImageView;
     @BindView(R.id.progress_bar) MaterialProgressBar progressBar;
-    @BindView(R.id.seek_bar) SeekBar seekBar;
     @BindView(R.id.mark_as_read_image_button) ImageButton markAsReadImageButton;
     @BindView(R.id.authors_text_view) TextView authorsTextView;
     @BindView(R.id.rating) RatingBar ratingBar;
@@ -776,13 +781,17 @@ public class AboutBookActivity extends AppCompatActivity
             progressBar.setMax(pageCount);
             setProgressBarProgress(readedPageCount, pageCount);
 
+            setSeekBarValueTextView(readedPageCount, pageCount);
+
+            seekBar.setMin(0);
             seekBar.setMax(pageCount);
             seekBar.setProgress(readedPageCount);
+            seekBar.setIndicatorPopupEnabled(true);
 
-            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+            seekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener()
             {
                 @Override
-                public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser)
+                public void onProgressChanged(DiscreteSeekBar seekBar, final int value, boolean fromUser)
                 {
                     realm.executeTransaction(new Realm.Transaction()
                     {
@@ -792,28 +801,33 @@ public class AboutBookActivity extends AppCompatActivity
                             Book book = realm.where(Book.class).equalTo("googleBookId", googleBookId).findFirst();
                             if(book != null)
                             {
-                                book.setReadedPageCount(progress);
+                                book.setReadedPageCount(value);
                             }
                         }
                     });
-
-                    setProgressBarProgress(progress, pageCount);
-                    checkForSeekBarValue(progress, pageCount);
+                    setSeekBarValueTextView(value, pageCount);
+                    setProgressBarProgress(value, pageCount);
+                    checkForSeekBarValue(value, pageCount);
                 }
 
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar)
+                public void onStartTrackingTouch(DiscreteSeekBar seekBar)
                 {
 
                 }
 
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar)
+                public void onStopTrackingTouch(DiscreteSeekBar seekBar)
                 {
 
                 }
             });
         }
+    }
+
+    private void setSeekBarValueTextView(int readedPageCount, int pageCount)
+    {
+        seekBarValueTextView.setText(readedPageCount + "/" + pageCount);
     }
 
     private void setProgressBarProgress(int pageReaded, int pageCount)

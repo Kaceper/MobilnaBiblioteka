@@ -76,6 +76,9 @@ dependencies {
     // MaterialProgressBar
     compile 'me.zhanghai.android.materialprogressbar:library:1.4.2'
 
+    // DiscreteSeekbar
+    compile 'org.adw.library:discrete-seekbar:1.0.1'
+
     // AboutLibraries
     implementation('com.mikepenz:aboutlibraries:6.0.2@aar') {
         transitive = true

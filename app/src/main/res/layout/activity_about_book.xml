@@ -170,30 +170,73 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rating" />
 
-        <SeekBar
+        <TextView
+            android:id="@+id/seek_bar_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="24dp"
+            android:textColor="#747474"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/seek_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/thumbnail" />
+
+        <ImageButton
+            android:id="@+id/left_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@null"
+            android:src="@drawable/back_icon"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/thumbnail" />
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
             android:id="@+id/seek_bar"
             android:layout_width="0dp"
             android:layout_height="20dp"
+            android:layout_marginTop="12dp"
+            app:dsb_indicatorColor="@color/colorSecondary"
+            app:dsb_indicatorSeparation="4dp"
+            app:dsb_progressColor="@color/colorPrimary"
+            app:dsb_thumbSize="20dp"
+            app:dsb_trackColor="@color/colorSecondary"
+            app:layout_constraintLeft_toRightOf="@id/left_image_button"
+            app:layout_constraintRight_toLeftOf="@id/right_image_button"
+            app:layout_constraintTop_toBottomOf="@id/thumbnail" />
+
+        <ImageButton
+            android:id="@+id/right_image_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="12dp"
             android:layout_marginTop="16dp"
-            android:progressDrawable="@drawable/custom_seek_bar"
-            android:thumb="@drawable/seek_bar_thumb"
-            app:layout_constraintRight_toLeftOf="@+id/mark_as_read_image_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/thumbnail" />
+            android:background="@null"
+            android:src="@drawable/forward_icon"
+            app:layout_constraintLeft_toRightOf="@id/seek_bar"
+            app:layout_constraintRight_toLeftOf="@id/mark_as_read_image_button"
+            app:layout_constraintTop_toBottomOf="@id/thumbnail" />
 
         <ImageButton
             android:id="@+id/mark_as_read_image_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
             android:background="@null"
             android:src="@drawable/mark_as_read"
             app:layout_constraintBottom_toBottomOf="@+id/seek_bar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/seek_bar"
+            app:layout_constraintLeft_toRightOf="@+id/right_image_button"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/seek_bar"
-            app:layout_constraintTop_toTopOf="@+id/seek_bar" />
+            app:layout_constraintTop_toBottomOf="@+id/thumbnail" />
 
         <ImageView
             android:id="@+id/description_icon"
@@ -236,7 +279,7 @@
             android:textColor="#747474"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/recycler_view_author_books"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/description_title_text_view"
