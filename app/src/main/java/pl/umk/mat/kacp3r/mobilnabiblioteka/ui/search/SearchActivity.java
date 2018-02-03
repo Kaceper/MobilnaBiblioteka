@@ -169,7 +169,7 @@ public class SearchActivity extends AppCompatActivity
         Log.d(TAG, "setupBottomNavigationViewEx");
     }
 
-    private void searchRequestWithRetrofit(final String bookName,
+    private void searchRequestWithRetrofit(final String query,
                                            int startIndex)
     {
         if (startIndex > 0)
@@ -179,7 +179,7 @@ public class SearchActivity extends AppCompatActivity
 
         ((MobilnaBiblioteka) getApplication()).getNetComponent().inject(this);
         RestApi service = retrofit.create(RestApi.class);
-        Call<SearchResponse> call = service.getBooks(bookName, startIndex, 10, "books", getString(R.string.api_key));
+        Call<SearchResponse> call = service.getBooks(query, startIndex, 10, "books", getString(R.string.api_key));
 
         call.enqueue(new Callback<SearchResponse>()
         {

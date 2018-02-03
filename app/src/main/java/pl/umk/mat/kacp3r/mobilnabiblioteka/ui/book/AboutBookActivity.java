@@ -172,7 +172,6 @@ public class AboutBookActivity extends AppCompatActivity
                         if (response.body().getVolumeInfo() != null)
                         {
                             String maturityRating;
-                            String title;
                             List<String> authors;
                             List<String> categories;
                             String thumbnailUrl = null;
@@ -196,6 +195,7 @@ public class AboutBookActivity extends AppCompatActivity
                                 maturityRating = "NO_INFO";
                             }
 
+                            String title;
                             if (response.body().getVolumeInfo().getTitle() != null)
                             {
                                 title = response.body().getVolumeInfo().getTitle();

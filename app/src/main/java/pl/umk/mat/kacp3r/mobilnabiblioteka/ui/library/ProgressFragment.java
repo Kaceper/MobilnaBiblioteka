@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +23,11 @@ import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.adapters.RealmBooksAdapter;
 
 public class ProgressFragment extends Fragment
 {
+    @BindView(R.id.linear_layout)
+    LinearLayout linearLayout;
+    @BindView(R.id.number_of_elements_text_view) TextView numberOfElementsTextView;
+    @BindView(R.id.sort_image_button)
+    ImageButton sortImageButton;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.empty_progress_books_list_textView) TextView emptyProgressBooksListTextView;
 
@@ -39,8 +46,14 @@ public class ProgressFragment extends Fragment
         adapter = new ProgressRecyclerViewAdapter(this.getActivity(), (LibraryActivity)getActivity());
 
         handleProgressFragmentRecyclerView();
+        setNumberOfElementsTextView();
 
         return v;
+    }
+
+    private void setNumberOfElementsTextView()
+    {
+        numberOfElementsTextView.setText("Liczba elementów (" + adapter.getItemCount() + ")");
     }
 
     public void handleProgressFragmentRecyclerView()

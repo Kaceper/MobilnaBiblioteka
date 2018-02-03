@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,11 @@ import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.adapters.RealmBooksAdapter;
 
 public class FinishedFragment extends Fragment
 {
+    @BindView(R.id.linear_layout)
+    LinearLayout linearLayout;
+    @BindView(R.id.number_of_elements_text_view) TextView numberOfElementsTextView;
+    @BindView(R.id.sort_image_button)
+    ImageButton sortImageButton;
     @BindView(R.id.constraint_layout) ConstraintLayout constraintLayout;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.empty_finished_books_list_textView) TextView emptyFinishedBooksListTextView;
@@ -44,8 +51,14 @@ public class FinishedFragment extends Fragment
         adapter = new FinishedRecyclerViewAdapter(this.getActivity(), (LibraryActivity)getActivity());
 
         handleFinishedFragmentRecyclerView();
+        setNumberOfElementsTextView();
 
         return v;
+    }
+
+    private void setNumberOfElementsTextView()
+    {
+        numberOfElementsTextView.setText("Liczba elementów (" + adapter.getItemCount() + ")");
     }
 
     public void handleFinishedFragmentRecyclerView()
