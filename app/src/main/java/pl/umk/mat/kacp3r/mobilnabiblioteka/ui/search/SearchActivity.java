@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
@@ -26,9 +27,6 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -37,13 +35,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.MobilnaBiblioteka;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.R;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.RestApi;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.search.Item;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.http.response.search.SearchResponse;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.RealmController;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.book.AboutBookActivity;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.utils.BottomNavigationViewHelper;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -130,8 +128,9 @@ public class SearchActivity extends AppCompatActivity
     public void onBarcodeScanImageButtonClick()
     {
         IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
         integrator.setCameraId(0);
+        integrator.addExtra("PROMPT_MESSAGE", "Umieść kod ISBN w prostokącie wizjera, aby zeskanować.");
         integrator.setBeepEnabled(false);
         integrator.setOrientationLocked(true);
         integrator.setBarcodeImageEnabled(false);
@@ -151,7 +150,8 @@ public class SearchActivity extends AppCompatActivity
             else
             {
                 Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
-                searchRequestWithRetrofit(result.getContents(), 0);
+                searchRequestByISBNWithRetrofit(result.getContents());
+                // searchRequestWithRetrofit(result.getContents(), 0);
             }
         }
         else
@@ -169,6 +169,59 @@ public class SearchActivity extends AppCompatActivity
         Log.d(TAG, "setupBottomNavigationViewEx");
     }
 
+    private void searchRequestByISBNWithRetrofit(String ISBN)
+    {
+        ((MobilnaBiblioteka) getApplication()).getNetComponent().inject(this);
+        RestApi service = retrofit.create(RestApi.class);
+        Call<SearchResponse> call = service.getBooksByISBN("https://www.googleapis.com/books/v1/volumes?q=isbn:" + ISBN);
+
+        call.enqueue(new Callback<SearchResponse>()
+        {
+            @Override
+            public void onResponse(@NonNull Call<SearchResponse> call, @NonNull Response<SearchResponse> response)
+            {
+                if (response.isSuccessful())
+                {
+                    if (response.body().getTotalItems() != 0)
+                    {
+                        if (response.body().getItems() != null)
+                        {
+                            emptySearchResultTextView.setVisibility(View.INVISIBLE);
+
+                            Intent library = new Intent(SearchActivity.this, AboutBookActivity.class);
+                            library.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            library.putExtra("isInLibrary", RealmController.with(SearchActivity.this).hasBookWithGoogleId(response.body().getItems().get(0).getId()));
+                            library.putExtra("id", response.body().getItems().get(0).getId());
+                            SearchActivity.this.startActivity(library);
+                        }
+                        else
+                        {
+                            hintLinearLayout.setVisibility(View.INVISIBLE);
+                            emptySearchResultTextView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    else
+                    {
+                        hintLinearLayout.setVisibility(View.INVISIBLE);
+                        emptySearchResultTextView.setVisibility(View.VISIBLE);
+                    }
+                }
+                else
+                {
+                    hintLinearLayout.setVisibility(View.INVISIBLE);
+                    emptySearchResultTextView.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<SearchResponse> call, @NonNull Throwable t)
+            {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     private void searchRequestWithRetrofit(final String query,
                                            int startIndex)
     {
@@ -184,7 +237,7 @@ public class SearchActivity extends AppCompatActivity
         call.enqueue(new Callback<SearchResponse>()
         {
             @Override
-            public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response)
+            public void onResponse(@NonNull Call<SearchResponse> call, @NonNull Response<SearchResponse> response)
             {
                 if (response.isSuccessful())
                 {

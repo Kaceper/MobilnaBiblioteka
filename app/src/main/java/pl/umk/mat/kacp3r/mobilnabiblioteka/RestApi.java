@@ -22,7 +22,7 @@ public interface RestApi
     Call<VolumeResponse> getBookInfo(@Path("id") String id);
 
     @GET
-    Call<SearchResponse> getBooksByIsbn(@Url String url);
+    Call<SearchResponse> getBooksByISBN(@Url String url);
 
     @GET
     Call<SearchResponse> getAuthorBooks(@Url String url);
