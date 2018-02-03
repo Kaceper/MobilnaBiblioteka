@@ -104,9 +104,6 @@ public class AboutBookActivity extends AppCompatActivity
     @OnClick(R.id.mark_as_read_image_button)
     public void markAsReadImageButtonClick()
     {
-        // AddBookDialogInActivity addBookDialogInActivity = new AddBookDialogInActivity();
-        // addBookDialogInActivity.showDialog(AboutBookActivity.this, "Dodaj książkę do biblioteki", googleBookId);
-
          MarkAsReadDialog markAsReadDialog = new MarkAsReadDialog();
          markAsReadDialog.showDialog(AboutBookActivity.this,"Oznaczyć książkę jako przeczytaną?", googleBookId);
     }
@@ -129,13 +126,13 @@ public class AboutBookActivity extends AppCompatActivity
                     {
                         book.setReadedPageCount(0);
                         readedPageCount[0] = 0;
-                        pageCount[0] = book.getPageCount();
+                        pageCount[0] = seekBar.getMax();
                     }
                     else
                     {
                         book.setReadedPageCount(book.getReadedPageCount() - 1);
                         readedPageCount[0] = book.getReadedPageCount();
-                        pageCount[0] = book.getPageCount();
+                        pageCount[0] = seekBar.getMax();
                     }
                 }
             }
@@ -144,7 +141,39 @@ public class AboutBookActivity extends AppCompatActivity
         setProgressBarProgress(readedPageCount[0], pageCount[0]);
         seekBar.setProgress(readedPageCount[0]);
         checkForSeekBarValue(readedPageCount[0], pageCount[0]);
+    }
 
+    @OnClick(R.id.right_image_button)
+    public void onRightImageButtonClick()
+    {
+        final int[] readedPageCount = new int[1];
+        final int[] pageCount = new int[1];
+
+        realm.executeTransaction(new Realm.Transaction()
+        {
+            @Override
+            public void execute (Realm realm)
+            {
+                Book book = realm.where(Book.class).equalTo("googleBookId", googleBookId).findFirst();
+                if(book != null)
+                {
+                    if (book.getReadedPageCount() == (book.getPageCount() - 1))
+                    {
+                        book.setReadedPageCount(book.getPageCount());
+                    }
+                    else
+                    {
+                        book.setReadedPageCount(book.getReadedPageCount() + 1);
+                        readedPageCount[0] = book.getReadedPageCount();
+                        pageCount[0] = seekBar.getMax();
+                    }
+                }
+            }
+        });
+        setSeekBarValueTextView(readedPageCount[0], pageCount[0]);
+        setProgressBarProgress(readedPageCount[0], pageCount[0]);
+        seekBar.setProgress(readedPageCount[0]);
+        checkForSeekBarValue(readedPageCount[0], pageCount[0]);
     }
 
     @Override
@@ -920,7 +949,7 @@ public class AboutBookActivity extends AppCompatActivity
                 {
                     book.setShelf(3);
                     book.setReadedPageCount(book.getPageCount());
-                    progressBar.setProgress(book.getPageCount());
+                    setProgressBarProgress(book.getReadedPageCount(), book.getPageCount());
                 }
             }
         });
@@ -958,7 +987,10 @@ public class AboutBookActivity extends AppCompatActivity
                 constraintSet.connect(R.id.description_title_text_view, ConstraintSet.TOP, R.id.thumbnail, ConstraintSet.BOTTOM, 32);
                 constraintSet.applyTo(constraintLayout);
 
+                leftImageButton.setVisibility(View.INVISIBLE);
+                seekBarValueTextView.setVisibility(View.INVISIBLE);
                 seekBar.setVisibility(View.INVISIBLE);
+                rightImageButton.setVisibility(View.INVISIBLE);
                 markAsReadImageButton.setVisibility(View.INVISIBLE);
             }
             else
@@ -968,8 +1000,11 @@ public class AboutBookActivity extends AppCompatActivity
                 constraintSet.connect(R.id.description_title_text_view, ConstraintSet.TOP, R.id.seek_bar, ConstraintSet.BOTTOM, 32);
                 constraintSet.applyTo(constraintLayout);
 
+                leftImageButton.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.VISIBLE);
                 seekBar.setVisibility(View.VISIBLE);
+                seekBarValueTextView.setVisibility(View.VISIBLE);
+                rightImageButton.setVisibility(View.VISIBLE);
                 markAsReadImageButton.setVisibility(View.VISIBLE);
             }
         }

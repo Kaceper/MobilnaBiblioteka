@@ -45,7 +45,6 @@ public class AddBookDialogInRecyclerView
             {
                 searchRecyclerViewAdapter.addBookToDatabase(realm, 1, i);
 
-                searchActivity.makeToast("Książka została dodana na półkę");
                 dialog.dismiss();
             }
         });
@@ -58,7 +57,6 @@ public class AddBookDialogInRecyclerView
             {
                 searchRecyclerViewAdapter.addBookToDatabase(realm, 2, i);
 
-                searchActivity.makeToast("Książka została dodana na półkę");
                 dialog.dismiss();
             }
         });
@@ -71,7 +69,6 @@ public class AddBookDialogInRecyclerView
             {
                 searchRecyclerViewAdapter.addBookToDatabase(realm, 3, i);
 
-                searchActivity.makeToast("Książka została dodana na półkę");
                 dialog.dismiss();
             }
         });

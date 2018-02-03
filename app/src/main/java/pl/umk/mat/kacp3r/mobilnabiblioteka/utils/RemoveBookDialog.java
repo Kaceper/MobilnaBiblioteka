@@ -83,7 +83,6 @@ public class RemoveBookDialog
         if (activity instanceof LibraryActivity)
         {
             ((LibraryActivity) activity).setPageCountTextView();
-            // ((LibraryActivity) activity).makeToast("Książka została usunięta z bazy danych ");
         }
     }
 
