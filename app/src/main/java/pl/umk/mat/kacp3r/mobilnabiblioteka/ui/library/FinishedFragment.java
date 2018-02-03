@@ -26,14 +26,15 @@ import pl.umk.mat.kacp3r.mobilnabiblioteka.R;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Book;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.RealmController;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.adapters.RealmBooksAdapter;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.utils.CleanListDialogInFragment;
 
 public class FinishedFragment extends Fragment
 {
     @BindView(R.id.linear_layout)
     LinearLayout linearLayout;
     @BindView(R.id.number_of_elements_text_view) TextView numberOfElementsTextView;
-    @BindView(R.id.sort_image_button)
-    ImageButton sortImageButton;
+    @BindView(R.id.clean_list_image_button) ImageButton cleanListImageButton;
+    @BindView(R.id.sort_image_button) ImageButton sortImageButton;
     @BindView(R.id.constraint_layout) ConstraintLayout constraintLayout;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.empty_finished_books_list_textView) TextView emptyFinishedBooksListTextView;
@@ -41,6 +42,13 @@ public class FinishedFragment extends Fragment
     private Realm realm;
     private FinishedRecyclerViewAdapter adapter;
     private boolean sortAsc = true;
+
+    @OnClick(R.id.clean_list_image_button)
+    public void onCleanListImageButtonClick()
+    {
+        CleanListDialogInFragment cleanListDialogInFragment = new CleanListDialogInFragment();
+        cleanListDialogInFragment.showDialog(getActivity(), FinishedFragment.this, adapter, realm, "Czy na pewno chcesz wyczyścić listę?", 3);
+    }
 
     @OnClick(R.id.sort_image_button)
     public void onImageButtonClick()

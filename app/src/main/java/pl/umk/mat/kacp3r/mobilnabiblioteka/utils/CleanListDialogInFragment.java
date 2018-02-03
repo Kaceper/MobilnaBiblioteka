@@ -2,7 +2,6 @@ package pl.umk.mat.kacp3r.mobilnabiblioteka.utils;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,29 +14,24 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.R;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.model.Book;
-import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.RealmController;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.library.FinishedFragment;
-import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.library.FinishedRecyclerViewAdapter;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.library.LibraryActivity;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.library.ProgressFragment;
-import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.library.ProgressRecyclerViewAdapter;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.library.ToReadFragment;
-import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.library.ToReadRecyclerViewAdapter;
 
-public class RemoveBookDialog
+public class CleanListDialogInFragment
 {
-    public void showDialog(final String googleBookId,
-                           final Activity activity,
+    public void showDialog(final Activity activity,
                            final Fragment fragment,
                            final RecyclerView.Adapter adapter,
                            final Realm realm,
                            String msg,
-                           final int position)
+                           final int shelf)
     {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
-        dialog.setContentView(R.layout.remove_book_from_library_custom_alert);
+        dialog.setContentView(R.layout.clean_list_custom_alert);
 
         TextView dialogText = (TextView) dialog.findViewById(R.id.text_dialog);
         dialogText.setText(msg);
@@ -52,21 +46,19 @@ public class RemoveBookDialog
             }
         });
 
-        Button removeButton = (Button) dialog.findViewById(R.id.remove_button);
+        Button removeButton = (Button) dialog.findViewById(R.id.clean_list_button);
         removeButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                RealmResults<Book> results = realm.where(Book.class).equalTo("googleBookId", googleBookId).findAll();
+                RealmResults<Book> results = realm.where(Book.class).equalTo("shelf", shelf).findAll();
 
                 realm.beginTransaction();
                 results.clear();
                 realm.commitTransaction();
 
-                adapter.notifyItemRemoved(position);
-                adapter.notifyItemRangeChanged(position, adapter.getItemCount());
-
+                adapter.notifyDataSetChanged();
                 updateFragment(fragment);
                 updateActivity(activity);
 
@@ -89,7 +81,7 @@ public class RemoveBookDialog
 
     private void updateFragment(Fragment fragment)
     {
-        if (fragment instanceof  ToReadFragment)
+        if (fragment instanceof ToReadFragment)
         {
             ((ToReadFragment) fragment).setNumberOfElementsTextView();
             ((ToReadFragment) fragment).handleToReadFragmentRecyclerView();
