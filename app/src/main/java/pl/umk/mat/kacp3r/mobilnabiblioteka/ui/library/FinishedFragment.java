@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.R;
@@ -38,6 +39,19 @@ public class FinishedFragment extends Fragment
 
     private Realm realm;
     private FinishedRecyclerViewAdapter adapter;
+
+    @OnClick(R.id.sort_image_button)
+    public void onImageButtonClick()
+    {
+        if (sortImageButton.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.sort_icon_asc).getConstantState()))
+        {
+            sortImageButton.setImageResource(R.drawable.sort_icon_desc);
+        }
+        else
+        {
+            sortImageButton.setImageResource(R.drawable.sort_icon_asc);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
