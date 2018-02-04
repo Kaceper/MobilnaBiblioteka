@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.R;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.realm.RealmController;
+import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.library.LibraryActivity;
 import pl.umk.mat.kacp3r.mobilnabiblioteka.ui.search.SearchActivity;
 
 public class SplashScreenActivity extends AppCompatActivity
@@ -22,10 +24,21 @@ public class SplashScreenActivity extends AppCompatActivity
             @Override
             public void run()
             {
-                Intent searchScreen = new Intent(SplashScreenActivity.this, SearchActivity.class);
-                SplashScreenActivity.this.startActivity(searchScreen);
-                overridePendingTransition(0, 0);
-                SplashScreenActivity.this.finish();
+                if (RealmController.with(SplashScreenActivity.this).hasBooks())
+                {
+                    Intent libraryScreen = new Intent(SplashScreenActivity.this, LibraryActivity.class);
+                    SplashScreenActivity.this.startActivity(libraryScreen);
+                    overridePendingTransition(0, 0);
+                    SplashScreenActivity.this.finish();
+                }
+                else
+                {
+
+                    Intent searchScreen = new Intent(SplashScreenActivity.this, SearchActivity.class);
+                    SplashScreenActivity.this.startActivity(searchScreen);
+                    overridePendingTransition(0, 0);
+                    SplashScreenActivity.this.finish();
+                }
             }
         }, SPLASH_DISPLAY_LENGTH);
     }
